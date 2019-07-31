@@ -1,0 +1,26 @@
+directory = '/Users/mariannelado-roy/Documents/kmc-simulation/pkg/'
+
+datapath=directory.'out/coordinates/'
+gifpath = directory.'gnuplot/yourgif.gif'
+
+
+# Has to be set manually from range.txt :
+set xrange [0 : 1.4826354912789593e-08 ]
+set yrange [0 : 1.4826354912789593e-08]
+
+FILES = system('ls '.datapath)
+
+set term gif animate delay 30
+set output gifpath
+
+set palette maxcolors 5
+set cbrange [0:4]
+set palette model RGB defined (0 'white', 1 'green', 5 'red')
+# set nokey
+
+do for [file in FILES]{
+  plot datapath.file u 1:2:3 with points
+}
+
+# close gif
+set output

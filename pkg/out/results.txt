@@ -1,0 +1,15 @@
+Nombre de sites: 2400 
+Nombre de processus: 19637
+Temps initialisation (runtime): 0.501533 s.
+Temps moyen pour 1 pas kMC (runtime): 0.029337 s.
+Temps total (runtime) : 2.933677 s. 
+Nombre de step: 100 
+Temps (systeme physique) : 0.011738 microsecondes 
+Stats en pourcentage: 
+Deposition_#0 | 8226 | 1.00 
+D_sb4_#0 | 0 | 14.00 
+D_sb4_#4113 | 4113 | 15.00 
+D_sb4_#5484 | 5484 | 15.00 
+D_sb4_#1371 | 1371 | 17.00 
+D_sb4_#2742 | 2742 | 19.00 
+D_sb4_#6855 | 6855 | 19.00 

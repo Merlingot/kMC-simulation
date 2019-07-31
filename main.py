@@ -11,34 +11,38 @@
 import numpy as np
 
 # input files
-import inputs.control as ctrl
-import inputs.processes as prc
+import pkg.inputs.control as ctrl
+import pkg.inputs.processes as prc
 # source code
-import src.kmc as kmc
-from src.initFunc import init
-from src.run import doSteps
-from src.saveFuncs import writeResults, writePositions
+import pkg.src.kmc as kmc
+from pkg.src.initFuncs import init
+from pkg.src.run import doSteps
+from pkg.src.saveFuncs import writeResults, writeRange
 
 
 def main():
 
 	# Assing process list to kmc module
-	kmc.proc_list = pcr.list_of_processes
+	kmc.proc_list = prc.list_of_processes
 
 	# Initialization
-	init(ctrl.area, ctrl.deposition_rate, ctrl.temperature)
+	print('Initialization ...')
+	init(ctrl.nx, ctrl.ny, ctrl.deposition_rate, ctrl.temperature)
 
 	# Run n steps
-	status=doSteps(ctrl.nsteps, ctrl.posFile, ctrl.undefinedFile, ctrl.total_deposition_rate)
+	print('Start of simulation')
+	status=doSteps(ctrl.nsteps, ctrl.posDir, ctrl.undefinedFile, ctrl.frameDir)
 
 	# Saving
+	print('Saving results...')
 	writeResults(ctrl.resultFile, status)
-	writePositions(ctrl.posFile)
+	writeRange(ctrl.rangeFile)
+
+	print('Done')
 
 	return status
 
 
 #### EXECUTE SIMULATION ####
 status = main()
-print(status)
 ############################
