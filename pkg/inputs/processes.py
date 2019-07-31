@@ -1,8 +1,8 @@
 # processes.py : a script to define all processes
 
 
-from pkg.includes.classdef import Process
-from pkg.includes.genProc import createProcess, showConfig
+from pkg.includes.process import Process
+from pkg.includes.procFuncs import createProcess, showConfig
 
 list_of_processes = []
 list_of_processes.clear()

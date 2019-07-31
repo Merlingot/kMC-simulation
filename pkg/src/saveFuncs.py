@@ -1,10 +1,12 @@
 #------------------------------------------------------
 # Module: saveFuncs
 # Description : Module containing the functions to save
-#               the results of the simulation.
+#               the data/results during the simulation.
 # Functions included:
 #   - writeResults
 #   - writePositions
+#   - writeRange
+#   - saveFrames
 #
 # to do : change the frequency of saving.
 #------------------------------------------------------
@@ -52,12 +54,13 @@ def writePositions(filename):
 
 def writeRange(filename):
     with open(filename, 'w+') as rangeFile:
+        rangeFile.write( '#x y \n')
         rangeFile.write( '0 0 \n')
         rangeFile.write( '{} {} \n'.format(kmc.lx, kmc.ly))
 
 
 
-def saveFrames(location, n):
+def saveFrames(folder, n):
     """
     Save all the frames of the simulation
     This is made for verification purpose
@@ -80,6 +83,6 @@ def saveFrames(location, n):
 
     ax.set_aspect('equal')
 
-    if location:
-        plt.savefig( '{}fig_{}.png'.format(location,n), format = "png", transparent = False )
+    if folder:
+        plt.savefig( '{}fig_{}.png'.format(folder,n), format = "png", transparent = False )
     plt.close()

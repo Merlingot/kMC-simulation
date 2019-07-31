@@ -13,7 +13,7 @@ import numpy as np
 # input files
 import pkg.inputs.control as ctrl
 import pkg.inputs.processes as prc
-# source code
+# package
 import pkg.src.kmc as kmc
 from pkg.src.initFuncs import init
 from pkg.src.run import doSteps

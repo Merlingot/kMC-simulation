@@ -14,10 +14,10 @@ import numpy as np
 
 import pkg.src.kmc as kmc
 
-from pkg.utilities.constglob import PREFACTOR, BOLTZMAN
+from pkg.utilities.const import PREFACTOR, BOLTZMAN
 from pkg.utilities.parameters import calculateDepositionArea, calculateTotalRate
-from pkg.includes.genLattice import createLattice
-from pkg.includes.genProc import createProcess
+from pkg.includes.latticeFunc import createLattice
+from pkg.includes.procFuncs import createProcess
 
 
 def init(nx, ny, deposition_rate, temperature):

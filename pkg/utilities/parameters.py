@@ -9,7 +9,7 @@
 
 
 from math import sqrt
-from pkg.utilities.constglob import LATTICE_PARAMETER, MASS_DENSITY, AVOGADRO_NUMBER, ATOMIC_MASS
+from pkg.utilities.const import LATTICE_PARAMETER, MASS_DENSITY, AVOGADRO_NUMBER, ATOMIC_MASS
 
 def calculateTotalRate( deposition_area, deposition_rate):
     """ Returns the rate constant for deposition in atoms/s  """

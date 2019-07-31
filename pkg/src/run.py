@@ -29,7 +29,7 @@ def doSteps( n, posDir, undefinedFile, frameDir):
     Args
         n (int) : Number of kMC steps to run
 	undefinedFile (str) : file name to write undefined configurations
-	posFile (str) : file name to write coordinates of atoms
+	posDir (str) : directory where to write coordinates of atoms
 	TOTAL_DEPOSITON_RATE (float) : total deposition rate
     Returns
         stop (Bool) : indicates if the simulation had to be stopped
