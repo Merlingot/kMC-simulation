@@ -1,4 +1,4 @@
-genProc module documentation :
+procFuncs module documentation :
 
 A condition is a tuple of 2 numbers : (clockwise_number, value)
 

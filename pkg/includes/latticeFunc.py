@@ -1,12 +1,17 @@
-# Function: createLattice
-# Description: function to create a Lattice Class instance
+#------------------------------------------------------
+# Module : latticeFunc
+# Description: contains the function to create a
+#              Lattice Class instance
+# Function included: createLattice
+#------------------------------------------------------
 
 
 import numpy as np
 from math import sqrt
 
-from pkg.includes.classdef import Lattice, Site
-from pkg.utilities.constglob import LATTICE_PARAMETER
+from pkg.includes.lattice import Lattice
+from pkg.includes.site import Site
+from pkg.utilities.const import LATTICE_PARAMETER
 a = LATTICE_PARAMETER
 
 def createLattice( repetitions ):
