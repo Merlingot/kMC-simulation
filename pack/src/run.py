@@ -19,17 +19,17 @@ import math
 import random
 import time
 
-import pkg.src.kmc as kmc
-from pkg.src.saveFuncs import writePositions, saveFrames
+import pack.src.kmc as kmc
+from pack.src.saveFuncs import writePositions, saveFrames
 
 
-def doSteps( n, posDir, undefinedFile, frameDir):
+def doSteps( n, coordDir, undefinedFile, frameDir):
     """
     Performs n kMC step.
     Args
         n (int) : Number of kMC steps to run
 	undefinedFile (str) : file name to write undefined configurations
-	posDir (str) : directory where to write coordinates of atoms
+	coordDir (str) : directory where to write coordinates of atoms
 	TOTAL_DEPOSITON_RATE (float) : total deposition rate
     Returns
         stop (Bool) : indicates if the simulation had to be stopped
@@ -46,7 +46,7 @@ def doSteps( n, posDir, undefinedFile, frameDir):
             PROC = kmc.proc_list[ selected_process_nb ]
             SITE = kmc.lattice.getSite( selected_site_nb )
 
-            #safety net -----------------------------------
+            # safety net ----------------------------------
             assert (PROC.id == SITE.id), 'unmatching event has been selected'
             #----------------------------------------------
 
@@ -63,8 +63,10 @@ def doSteps( n, posDir, undefinedFile, frameDir):
             kmc.steps += 1
             print( 'step: {} | process: {} | time: {:.6f} | runtime: {:.6f}'.format( kmc.steps,  PROC.name, kmc.time, kmc.runtime  ) )
 
-            writePositions('{}step_{}.txt'.format(posDir, steps_done))
-            saveFrames( frameDir, kmc.steps)
+            writePositions('{}step_{}.txt'.format(coordDir, steps_done))
+
+            # saveFrames: This will save an image of each step of the simulation. Only for testing purpose. Will slow down the simulation and take enormous space.
+            # saveFrames( frameDir, kmc.steps)
 
         else:
             stop = True
@@ -131,8 +133,7 @@ def decisionTree(PROC, SITE, filename):
 
     if PROC.category == "molecule separation":
         """
-        implies that we take 2/4 (Sb2/Sb4) already existing atoms that are merged on 1 site (central cwid)
-        and separate them on 2/4 different sites.
+        implies that we take 4 (Sb4) already existing atoms that are merged on 1 site (central cwid) and separate them on 4 different sites.
         moleculeseparation.action_sites = ( new sites cwid )
         """
         NEWS = []

@@ -1,5 +1,7 @@
+#------------------------------------------------------
 # Module : Bond Counting
 # Description : Stuff for the bound counting scheme
+#------------------------------------------------------
 
 # Dictionnaries for the bound counting scheme
 n1 = {

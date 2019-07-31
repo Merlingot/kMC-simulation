@@ -13,7 +13,7 @@
 
 import numpy as np
 
-import pkg.src.kmc as kmc
+import pack.src.kmc as kmc
 
 
 def writeResults(filename, status):

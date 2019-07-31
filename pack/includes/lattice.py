@@ -4,7 +4,7 @@
 #------------------------------------------------------
 
 
-from pkg.includes.site import Site
+from pack.includes.site import Site
 
 
 class Lattice:

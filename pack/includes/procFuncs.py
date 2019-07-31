@@ -17,9 +17,9 @@ import numpy as np
 from math import sqrt
 import matplotlib.pyplot as plt
 
-from pkg.includes.process import Process
-from pkg.includes.latticeFunc import createLattice
-from pkg.utilities.neighbourgsDicts import neighboursDict, neighboursDict1, neighboursDict2
+from pack.includes.process import Process
+from pack.includes.latticeFunc import createLattice
+from pack.utilities.neighbourgsDicts import neighboursDict, neighboursDict1, neighboursDict2
 
 
 def createProcess( name, category, activation_energy = None, prefactor = None,

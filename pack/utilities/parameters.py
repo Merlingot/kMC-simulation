@@ -7,9 +7,8 @@
 # Unit cell dimensions : [0,0] to [a/2, 2*a/sqrt(3)]
 #------------------------------------------------------
 
-
 from math import sqrt
-from pkg.utilities.const import LATTICE_PARAMETER, MASS_DENSITY, AVOGADRO_NUMBER, ATOMIC_MASS
+from pack.utilities.const import LATTICE_PARAMETER, MASS_DENSITY, AVOGADRO_NUMBER, ATOMIC_MASS
 
 def calculateTotalRate( deposition_area, deposition_rate):
     """ Returns the rate constant for deposition in atoms/s  """

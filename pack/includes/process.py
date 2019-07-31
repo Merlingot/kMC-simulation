@@ -6,8 +6,8 @@
 
 import numpy as np
 
-from pkg.utilities.const import EN, EMIN
-from pkg.utilities.bondCounting import bond_dicts, theta
+from pack.utilities.const import EN, EMIN
+from pack.utilities.bondCounting import bond_dicts, theta
 
 
 class Process:

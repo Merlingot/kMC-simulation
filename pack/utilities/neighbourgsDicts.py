@@ -1,6 +1,6 @@
 # File: neighboursDict
 # Description: Contains dictionnaries used in the replaceZeros function.
-# Each dictionnary gives the number of the first neighbours of each sites regarding some conditions.
+# Each dictionnary gives the cwid number of the first neighbours of each sites regarding some conditions. Kind of stuff that I don't want to explain... bla bla bla
 
 
 neighboursDict = {

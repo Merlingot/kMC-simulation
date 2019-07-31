@@ -12,12 +12,12 @@
 import time
 import numpy as np
 
-import pkg.src.kmc as kmc
+import pack.src.kmc as kmc
 
-from pkg.utilities.const import PREFACTOR, BOLTZMAN
-from pkg.utilities.parameters import calculateDepositionArea, calculateTotalRate
-from pkg.includes.latticeFunc import createLattice
-from pkg.includes.procFuncs import createProcess
+from pack.utilities.const import PREFACTOR, BOLTZMAN
+from pack.utilities.parameters import calculateDepositionArea, calculateTotalRate
+from pack.includes.latticeFunc import createLattice
+from pack.includes.procFuncs import createProcess
 
 
 def init(nx, ny, deposition_rate, temperature):

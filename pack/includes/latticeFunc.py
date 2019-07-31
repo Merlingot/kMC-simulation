@@ -9,9 +9,9 @@
 import numpy as np
 from math import sqrt
 
-from pkg.includes.lattice import Lattice
-from pkg.includes.site import Site
-from pkg.utilities.const import LATTICE_PARAMETER
+from pack.includes.lattice import Lattice
+from pack.includes.site import Site
+from pack.utilities.const import LATTICE_PARAMETER
 a = LATTICE_PARAMETER
 
 def createLattice( repetitions ):

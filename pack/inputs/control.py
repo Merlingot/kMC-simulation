@@ -11,20 +11,23 @@ temperature=300
 # deposition rate
 deposition_rate=50
 
-# absolute path to the package directory (pkg)
-simudir = "/Users/mariannelado-roy/kmc-simulation/pkg/"
+# absolute path to the package directory (<mypath>/pack/)
+packdir = "/Users/mariannelado-roy/kmc-simulation/pack/"
 
 # path to the file where the results of the simulation will be written
-resultFile = simudir + "out/results.txt"
+resultFile = packdir + "out/results.txt"
 
 # path to the directory where the position of the atoms will be written
-posDir = simudir + "out/coordinates/"
+coordDir = packdir + "out/coordinates/"
 
 # path to the directory where to save the frames
-frameDir = simudir + "out/frames/"
+frameDir = packdir + "out/frames/"
 
 # path to the file where the domain lenght will be written
-rangeFile = simudir + "out/range.txt"
+rangeFile = packdir + "out/range.txt"
 
 # path and name of the file where the unregistered configurations will be written.
-undefinedFile = simudir + "out/undefined.txt"
+undefinedFile = packdir + "out/undefined.txt"
+
+# path to the gif file
+gifFile = packdir + "out/mygif.gif"

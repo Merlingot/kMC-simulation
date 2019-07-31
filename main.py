@@ -1,23 +1,24 @@
 #------------------------------------------------------
-# File: main
+# Executable file: main
 # Description: file to be executed to run a simulation
-#              not interactively.
-# 			   How to run: $ python <dir>/main
+# 			   not interactively.
+# How to run:
+# 	$ cd <simudir>
+# 	$ python <dir>/main
 # Function included :
 #	- main
-# Note :Only module to import from input files.
 #------------------------------------------------------
 
 import numpy as np
 
 # input files
-import pkg.inputs.control as ctrl
-import pkg.inputs.processes as prc
+import pack.inputs.control as ctrl
+import pack.inputs.processes as prc
 # package
-import pkg.src.kmc as kmc
-from pkg.src.initFuncs import init
-from pkg.src.run import doSteps
-from pkg.src.saveFuncs import writeResults, writeRange
+import pack.src.kmc as kmc
+from pack.src.initFuncs import init
+from pack.src.run import doSteps
+from pack.src.saveFuncs import writeResults, writeRange
 
 
 def main():
@@ -31,7 +32,7 @@ def main():
 
 	# Run n steps
 	print('Start of simulation')
-	status=doSteps(ctrl.nsteps, ctrl.posDir, ctrl.undefinedFile, ctrl.frameDir)
+	status=doSteps(ctrl.nsteps, ctrl.coordDir, ctrl.undefinedFile, ctrl.frameDir)
 
 	# Saving
 	print('Saving results...')
