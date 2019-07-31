@@ -1,25 +1,74 @@
-"""
-Module: runProc
-
-Description: contains the functions needed to run a process on a lattice site.
-
-Functions included:
-	- put
-	- remove
-	- diffusion
-	- createMolecule
-	- separateMolecule
-"""
+#------------------------------------------------------
+# Module: runProc
+# Description: functions needed to run a kmc step & to
+#              execute a specific process on a specific
+#              lattice site.
+#Functions included:
+#   - doSteps
+#   - decisionTree
+#	- put
+#	- remove
+#	- diffusion
+#	- createMolecule
+#	- separateMolecule
+#------------------------------------------------------
 
 
 import numpy
 import math
 import random
+import time
 
 import kmc
 
 
-def decisionTree(PROC, SITE, filename) :
+def doSteps( n, undefinedFile, posFile):
+    """
+    Performs n kMC step.
+    Args
+        n (int) : Number of kMC steps to run
+	undefinedFile (str) : file name to write undefined configurations
+	posFile (str) : file name to write coordinates of atoms
+	TOTAL_DEPOSITON_RATE (float) : total deposition rate
+    Returns
+        stop (Bool) : indicates if the simulation had to be stopped
+	       	      before the n steps were completed due to some reason.
+    """
+    steps_done = 0
+    stop = False
+    while steps_done < n:
+        t0 = time.clock()
+        selected_process_nb, selected_site_nb = kmc.selectEvent()
+
+        if selected_process_nb:
+
+            PROC = kmc.proc_list[ selected_process_nb ]
+            SITE = kmc.lattice.getSite( selected_site_nb )
+
+            #safety net -----------------------------------
+            assert (PROC.id == SITE.id), 'unmatching event has been selected'
+            #----------------------------------------------
+
+            decisionTree(PROC, SITE, undefinedFile)
+
+            kmc.time += kmc.updateTime()
+            kmc.cumulative_rates = kmc.updateCumulRate()
+
+            t1 = time.clock()
+            kmc.runtime_steps.append(t1-t0)
+            kmc.runtime_time += t1-t0
+
+            kmc.steps_done += 1
+            kmc.steps += 1
+
+        else:
+            stop = True
+            break
+
+    return stop
+
+
+def decisionTree(PROC, SITE, filename):
 
     """
     Runs a process on a site. Update all Bookeeping arrays.
@@ -206,7 +255,6 @@ def diffusion(OLD, NEW, filename):
     nb_list = list( OLD.neighbours_nb |  NEW.neighbours_nb )
     site_list = list ( kmc.lattice.getSite( site ) for site in nb_list )
 
-
     for site in site_list:
         processes_to_delete = kmc.proc_adress.get( site.id )
         if processes_to_delete:
@@ -232,8 +280,8 @@ def diffusion(OLD, NEW, filename):
             for proc in processes_to_add :
                 kmc.addEvent(proc, site.number)
         else :
-	    with open(filename, 'a+') as f:
-            	f.write( str( site.id )+ '\n' )
+            with open(filename, 'a+') as f:
+                f.write( str( site.id )+ '\n' )
 
 
 
@@ -260,7 +308,7 @@ def createMolecule(OLDS, NEW, filename):
                 kmc.delEvent(proc, site.number)
         else:
             with open(filename, 'a+') as f:
-		f.write( str( site.id )+ '\n' )
+                f.write( str( site.id )+ '\n' )
 
     NEW.occupied = True
     for old in OLDS:
@@ -279,11 +327,9 @@ def createMolecule(OLDS, NEW, filename):
         if processes_to_add :
             for proc in processes_to_add :
                 kmc.addEvent(proc, site.number)
-        else :
+        else:
             with open(filename, 'a+') as f:
-		f.write( str( site.id )+ '\n' )
-
-
+                f.write( str( site.id )+ '\n')
 
 
 def separateMolecule(SITE, NEWS, filename):
@@ -309,7 +355,7 @@ def separateMolecule(SITE, NEWS, filename):
                 kmc.delEvent(proc, site.number)
         else :
             with open(filename, 'a+') as f:
-		f.write( str( site.id )+ '\n' )
+                f.write( str( site.id )+ '\n' )
 
 
     SITE.is_occupied = False
@@ -332,4 +378,4 @@ def separateMolecule(SITE, NEWS, filename):
                 kmc.addEvent(proc, site.number)
         else:
             with open(filename, 'a+') as f:
-		f.write( str( site.id )+ '\n' )
+                f.write( str( site.id )+ '\n' )

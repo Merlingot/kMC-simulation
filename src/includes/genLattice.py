@@ -1,19 +1,19 @@
 # Function: createLattice
-# 
 # Description: function to create a Lattice Class instance
 
 
 import numpy as np
 
-from lattice import Lattice
-from site import Site
+#PROBLEMS
+from latticeClass import Lattice
+from siteClass import Site
 
 
-def createLattice( REPETITIONS ):
+def createLattice( repetitions ):
     """
     Generate all Sites, then create the Lattice.
     Args:
-        REPETITIONS (Tuple(x,y,z)): tuple of the number of REPETITIONS along the 3 axis for the simulation cell.
+        repetitions (Tuple(x,y,z)): tuple of the number of repetitions along the 3 axis for the simulation cell.
             x (Int):           Number of lattice repeat units along x.
             y (Int):           Number of lattice repeat units along y.
             z (Int):           Number of lattice repeat units along z.
@@ -22,7 +22,7 @@ def createLattice( REPETITIONS ):
         Lattice(sites)
     """
 
-    x, y, z = REPETITIONS[0], REPETITIONS[1], 1 # 2D
+    x, y, z = repetitions[0], repetitions[1], 1 # 2D
 
     grid = np.array( list( range( 0, int( x * y * z * 6  ) ) ) ).reshape( x, y, z, 6, order='C' )
 

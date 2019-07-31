@@ -1,52 +1,67 @@
-""""
-Module: initFuncs
-
-Description: Contains all functions for initilializing the simulation
-
-Functions included:
-	- init
-	- initDepositionProcess
-	- initStatic
-	- initDynamic
-"""
+#------------------------------------------------------
+# Module: initFuncs
+# Description: contains all functions for initilializing
+#              the simulation
+# Functions included:
+#	- init
+#	- initDepositionProcess
+#	- initStatic
+#	- initDynamic
+#------------------------------------------------------
 
 import time
 import numpy as np
 
 import kmc
-from utilities.genProc import createProcess
 
-def init(TOTAL_DEPOSITION_RATE):
+from includes.constglob import PREFACTOR, BOLTZMAN
+from includes.parameters import calculateRepetitions, calculateTotalRate
+from includes.genLattice import createLattice
+from includes.genProc import createProcess
+
+
+def init(area, deposition_rate, temperature):
     """
     Initializes all sites, lattice, book-keeping arrays.
     """
     t0 = time.clock()
-    initDepositionProcess(TOTAL_DEPOSITION_RATE)
+    initLattice(area)
+    initProcessRates(temperature)
+    initDepositionProcess(area, deposition_rate)
     initStatic()
-    initDynamic(TOTAL_DEPOSITION_RATE)
+    initDynamic()
     t1 = time.clock()
     kmc.init_time = t1 - t0
-    
-def initDepositionProcess(TOTAL_DEPOSITION_RATE):
+
+def initLattice(area):
+    """Creates the lattice"""
+    kmc.lattice = createLattice( calculateRepetitions(area) )
+
+def initProcessRates(temperature):
+    """Calculates the process rates given the temperature"""
+    for proc in kmc.proc_list:
+        proc.rate = proc.calculateRate(PREFACTOR, temperature, BOLTZMAN)
+
+def initDepositionProcess(area, deposition_rate):
     """
     Create the deposition processes. Add them to the kmc.proc_list list.
     Because it is appended to kmc.proc_list, theses process are always the last ones.
     This has to be created appart because of the fact that the group rate (rate constant*nb of sites) has to be constant.
 
-    Important: this is where you define the main deposition process
+    Important: this is where is defined the main deposition process
     This deposition process implies the deposition of a Sb4 on the central site, with no other first neighbour.
     """
-
+    total_deposition_rate = calculateTotalRate(area, deposition_rate)
     start_index = len(kmc.proc_list)
     dep =  createProcess( 'Deposition', 'deposition', shell = 1, empty = 0 )
     for proc in dep :
-        proc.rate = TOTAL_DEPOSITION_RATE #TO DO: assign directly
+        proc.rate = total_deposition_rate #TO DO: assign directly
     kmc.proc_list +=  dep
     kmc.deposition_ids = np.arange(start_index, start_index+len(dep))
 
 
 def initStatic():
-    """ Initialise all unchanging scalars and arrays belonging to the kmc module """
+    """ Initialise all static scalars and arrays belonging to the kmc module """
 
     kmc.time = 0; kmc.steps= 0; kmc.runtime = 0;
     kmc.proc_adress = {}
@@ -82,7 +97,6 @@ def initEvents():
 
     for site in kmc.lattice.sites :
         possible_processes_nb = kmc.proc_adress.get( site.id )
-
         if possible_processes_nb :
             for proc_nb in possible_processes_nb :
                 kmc.addEvent( proc_nb, site.number )

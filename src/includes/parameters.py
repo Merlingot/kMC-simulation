@@ -1,8 +1,14 @@
+#------------------------------------------------------
 # Module : parameters
-# Description : functions
+# Description : functions to calculate things related to the deposition rate #               and the number of repetitions of the unit cell.
+# Included functions:
+#   - calculateTotalRate
+#   - calculateRepetitions
+#   - num
+#------------------------------------------------------
 
 from math import sqrt
-from include.constants import LATTICE_PARAMETER, MASS_DENSITY, AVOGADRO_NUMBER, ATOMIC_MASS
+from constglob import LATTICE_PARAMETER, MASS_DENSITY, AVOGADRO_NUMBER, ATOMIC_MASS
 
 def calculateRepetitions(deposition_area):
     """ Nombres de repetition de la maille elementaire en x en y """
@@ -19,6 +25,6 @@ def calculateTotalRate( deposition_area, deposition_rate):
 def num(side):
     deposition_area = side**2 #m^2
     unit_cell_area = 0.5*sqrt(3)*(LATTICE_PARAMETER**2) # m^2
-    num = deposition_area/unit_cell_area 
+    num = deposition_area/unit_cell_area
     Nx=int(2*num/3); Ny = int(num/3)
     return num, Nx, Ny

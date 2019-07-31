@@ -1,5 +1,5 @@
-"""processes.py : a script to define all processes
-"""
+# processes.py : a script to define all processes
+
 
 from DataTypes import *
 list_of_processes = []

@@ -1,5 +1,4 @@
-
-# genProc Module documentation :
+genProc module documentation :
 
 A condition is a tuple of 2 numbers : (clockwise_number, value)
 
@@ -25,5 +24,3 @@ A configuration is a list of 19 numbers
         4 - sb4
 Action sites documentation:
 (argument to process class)
-
-

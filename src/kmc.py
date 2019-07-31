@@ -1,19 +1,15 @@
-"""
-Module: kmc.py
-
-Description: Contains all the low level functions needed to implement the kMC algorithm.
-
-Funtions included:
-	- bisection
-	- addEvent
-	- delEvent
-	- selectEvent
-	- updateCumulRate
-	- updateTime
-
-Python version: 3.6.7
-"""
-
+#------------------------------------------------------
+# Module: kmc.py
+# Description: contains all the low level functions
+#              needed to implement the kMC algorithm.
+# Funtions included:
+#	- bisection
+#	- addEvent
+#	- delEvent
+#	- selectEvent
+#	- updateCumulRate
+#	- updateTime
+#------------------------------------------------------
 
 import numpy
 import math
@@ -113,7 +109,7 @@ def selectEvent():
         return False, False
 
 
-def updateCumulRate(total_deposition_rate):
+def updateCumulRate():
     """
     Calculate the cumulative sum of the rate_constants array weighted by the nb_of_sites array
     Used to update cumulative_rates array

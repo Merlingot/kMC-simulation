@@ -1,13 +1,11 @@
-
 #---------------------------------------------------------
-# File: Site.py 
-#
-# Description: Definition of the Site Class.
-#
-# Python version: 3.6.7
+# Module: site.py
+# Description: definition of the Site Class.
 #------------------------------------------------------
 
+
 import numpy as np
+
 
 class Site:
 
@@ -53,6 +51,3 @@ class Site:
             nb += str( i.occupancy )
             iden = int(nb, 5)
         return iden
-
-
-

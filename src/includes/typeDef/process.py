@@ -1,10 +1,13 @@
-# Module: Process.py
-# Description: Definition of Process Class
+#------------------------------------------------------
+# Module: process.py
+# Description: definition of Process Class
+#------------------------------------------------------
+
 
 import numpy as np
 
-from constants import EN, EMIN
-from bondCounting import bound_dicts, theta
+from constglob import EN, EMIN
+from utilities.bondCounting import bond_dicts, theta
 
 
 class Process:
@@ -85,4 +88,3 @@ class Process:
             return self.prefactor*np.exp(-self.activation_energy/(boltzman*temperature))
         else:
             return prefactor*np.exp(-self.activation_energy/(boltzman*temperature))
-

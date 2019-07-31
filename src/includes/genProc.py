@@ -1,24 +1,24 @@
-"""
-Module: createproc
+#------------------------------------------------------
+# Module: createproc
+# Description: module containing the function to create
+# 			   Process Class instances.
+# Functions included:
+#	- createProcess
+#	- symetricActionSites
+#	- equivalent
+#	- replaceZeros
+#	- showConfig
+#------------------------------------------------------
 
-Description: Module containing the function to create Process Class instances. 
-
-Functions included:
-	- createProcess
-	- symetricActionSites
-	- equivalent 
-	- replaceZeros
-	- showConfig
-"""
 
 from itertools import chain
 import random
 import numpy as np
 from math import sqrt
 
-from process import Process
-from neighbourgsDicts import neighboursDict, neighboursDict1, neighboursDict2
-from bondCounting import bond_dicts, theta
+from processClass import Process
+from utilities.neighbourgsDicts import neighboursDict, neighboursDict1, neighboursDict2
+
 
 def createProcess( name, category, activation_energy = None, prefactor = None,
 new_sites = None, old_sites = None, empty = None, shell = None, shells = None,

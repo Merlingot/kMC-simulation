@@ -1,18 +1,13 @@
-
 #------------------------------------------------------
-# File : Lattice.py
-# 
-# Description : Definition of the Lattice Class.
-#
-# Python version: 3.6.7
+# Module: lattice.py
+# Description: definition of the Lattice Class.
 #------------------------------------------------------
 
 import numpy as np
 import matplotlib.pyplot as plt
 from math import sqrt
 
-from site import Site
-
+from siteClass import Site
 
 
 class Lattice:
@@ -88,4 +83,3 @@ class Lattice:
         plt.scatter(x,y, c=o, marker = '.', cmap=plt.cm.get_cmap('Blues', 4), vmin = -1, vmax = 4 )
         plt.gca().set_aspect('equal', adjustable='box')
         plt.show()
-
