@@ -4,8 +4,8 @@
 #              execute a specific process on a specific
 #              lattice site.
 #Functions included:
-#   - doSteps
-#   - decisionTree
+#   	- doSteps
+#   	- decisionTree
 #	- put
 #	- remove
 #	- diffusion
