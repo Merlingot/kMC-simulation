@@ -5,6 +5,7 @@ Notes on directories:
 <simudir> : absolute path to the kmc-simulation directory
 <packdir> : absolute path to the package directory
             <packdir>=<simudir>/pack/
+<outdir> : absolute path to the directory where results will be saved.
 
 Executable files:
 <simudir>/main.py : run the simulation
