@@ -11,8 +11,7 @@ from math import sqrt
 
 from pack.includes.lattice import Lattice
 from pack.includes.site import Site
-from pack.utilities.const import LATTICE_PARAMETER
-a = LATTICE_PARAMETER
+from pack.utilities.const import LATTICE_PARAMETER as a
 
 def createLattice( repetitions ):
     """
