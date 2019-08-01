@@ -6,7 +6,9 @@
 #   $ python createGif.py
 #######################################################
 
-import pack.inputs.control as ctrl
-from pack.tools.gifFuncs import createGif
 
-createGif(ctrl.coordDir, ctrl.rangeFile, ctrl.gifFile)
+import pack.inputs.control as ctrl
+from pack.tools.gifFuncs import animation
+
+
+animation(ctrl.coordDir, ctrl.rangeFile, ctrl.gifFile)
