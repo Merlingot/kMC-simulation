@@ -1,14 +1,13 @@
 #######################################################
-# Executable file : creatGif.py
+# Executable file : do_animation.py
 # Description: makes a gif from the simulation data
 # How to run:
 #   $ cd <simudir>
-#   $ python createGif.py
+#   $ python do_animation.py
 #######################################################
 
 
 import pack.inputs.control as ctrl
-from pack.tools.gifFuncs import animation
+from pack.tools.animFuncs import animationFunc
 
-
-animation(ctrl.coordDir, ctrl.rangeFile, ctrl.gifFile)
+animationFunc(ctrl.coorddir, ctrl.rangeFile, ctrl.gifFile)

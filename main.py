@@ -12,8 +12,7 @@
 import numpy as np
 import os
 
-# package
-import pack.src.kmc as kmc
+# package functions
 from pack.src.initFuncs import init, initDirectories
 from pack.src.run import doSteps
 from pack.src.saveFuncs import writeResults, writeRange
@@ -21,6 +20,7 @@ from pack.src.saveFuncs import writeResults, writeRange
 def main():
 
 	# input files
+	import pack.src.kmc as kmc
 	import pack.inputs.control as ctrl
 	import pack.inputs.processes as prc
 
@@ -29,12 +29,13 @@ def main():
 
 	# Initialization
 	print('Initialization ...')
-	initDirectories(ctrl.outDir, ctrl.coordDir, ctrl.framesDir)
+	initDirectories(ctrl.outdir, ctrl.coorddir, ctrl.framesdir)
 	init(ctrl.nx, ctrl.ny, ctrl.deposition_rate, ctrl.temperature)
 
 	# Run n steps
 	print('Start of simulation')
-	status=doSteps(ctrl.nsteps, ctrl.coordDir, ctrl.undefinedFile, ctrl.frameDir)
+	status=doSteps(ctrl.nsteps, ctrl.coorddir, ctrl.undefinedFile, ctrl.framesdir)
+	print('End of simulation')
 
 	# Saving
 	print('Saving results...')
