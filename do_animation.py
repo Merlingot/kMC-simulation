@@ -2,7 +2,7 @@
 # Executable file : do_animation.py
 # Description: makes a gif from the simulation data
 # How to run:
-#   $ cd <simudir>
+#   $ cd <kmcDir>
 #   $ python do_animation.py
 #######################################################
 

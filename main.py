@@ -2,7 +2,7 @@
 # Executable file: main
 # Description: file to be executed to run a simulation.
 # How to run:
-# 	$ cd <simudir>
+# 	$ cd <kmcDir>
 # 	$ python main.py
 # Function included :
 #	- main

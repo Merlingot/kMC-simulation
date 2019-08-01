@@ -2,13 +2,13 @@
 Kinetic Monte Carlo simulation of epitaxial growth of Antimonene
 
 Notes on directories:
-<simudir> : absolute path to the kmc-simulation directory
+<kmcDir> : absolute path to the kmc-simulation directory
 <packdir> : absolute path to the package directory
-            <packdir>=<simudir>/pack/
+            <packdir>=<kmcDir>/pack/
 <outdir> : absolute path to the directory where results will be saved.
 
 Executable files:
-<simudir>/main.py : run the simulation
+<kmcDir>/main.py : run the simulation
 <simudit>/creatGif.py : make a gif out of the simulation result
 
 Input files :
