@@ -10,24 +10,26 @@
 #######################################################
 
 import numpy as np
+import os
 
-# input files
-import pack.inputs.control as ctrl
-import pack.inputs.processes as prc
 # package
 import pack.src.kmc as kmc
-from pack.src.initFuncs import init
+from pack.src.initFuncs import init, initDirectories
 from pack.src.run import doSteps
 from pack.src.saveFuncs import writeResults, writeRange
 
-
 def main():
+
+	# input files
+	import pack.inputs.control as ctrl
+	import pack.inputs.processes as prc
 
 	# Assing process list to kmc module
 	kmc.proc_list = prc.list_of_processes
 
 	# Initialization
 	print('Initialization ...')
+	initDirectories(ctrl.outDir, ctrl.coordDir, ctrl.framesDir)
 	init(ctrl.nx, ctrl.ny, ctrl.deposition_rate, ctrl.temperature)
 
 	# Run n steps
@@ -42,6 +44,7 @@ def main():
 	print('Done')
 
 	return status
+
 
 # Execute main function
 main()

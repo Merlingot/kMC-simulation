@@ -1,4 +1,4 @@
-#------------------------------------------------------
+#######################################################
 # Module: initFuncs
 # Description: contains all functions for initilializing
 #              the simulation
@@ -7,7 +7,7 @@
 #	- initDepositionProcess
 #	- initStatic
 #	- initDynamic
-#------------------------------------------------------
+#######################################################
 
 import time
 import numpy as np
@@ -22,7 +22,7 @@ from pack.includes.procFuncs import createProcess
 
 def init(nx, ny, deposition_rate, temperature):
     """
-    Initializes all sites, lattice, book-keeping arrays.
+    Initializes all directories, sites, lattice, book-keeping arrays.
     """
     t0 = time.clock()
     initLattice(nx, ny)
@@ -32,6 +32,17 @@ def init(nx, ny, deposition_rate, temperature):
     initDynamic(kmc.total_deposition_rate)
     t1 = time.clock()
     kmc.init_time = t1 - t0
+
+def initDirectories(outDir, coordDir, framesDir):
+    """ Verify is directories for file saving exists. If not creates the folder. """
+    import os
+    
+    if not os.path.exists(outDir):
+        os.mkdir(outDir)
+    if not os.path.exists(coordDir):
+        os.mkdir(coordDir)
+    if not os.path.exists(framesDir):
+        os.mkdir(framesDir)
 
 def initLattice(nx,ny):
     """Creates the lattice"""
