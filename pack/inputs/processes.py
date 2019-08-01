@@ -1,8 +1,8 @@
 # processes.py : a script to define all processes
 
 # imports
-from pack.includes.process import Process
-from pack.includes.procFuncs import createProcess, showConfig
+from pack.include.process import Process
+from pack.include.procFuncs import createProcess, showConfig
 
 # initialize list_of_processes
 list_of_processes = []

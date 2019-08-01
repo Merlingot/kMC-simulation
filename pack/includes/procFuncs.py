@@ -17,8 +17,8 @@ import numpy as np
 from math import sqrt
 import matplotlib.pyplot as plt
 
-from pack.includes.process import Process
-from pack.includes.latticeFunc import createLattice
+from pack.include.process import Process
+from pack.include.latticeFunc import createLattice
 from pack.utilities.neighbourgsDicts import neighboursDict, neighboursDict1, neighboursDict2
 
 

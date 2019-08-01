@@ -10,12 +10,12 @@ temperature=300
 # deposition rate (Angstrom/second)
 deposition_rate=50
 
-# absolute path to the simulation directory (<simudir>)
-simudir = "/Users/mariannelado-roy/kmc-simulation/"
-# absolute path to the package directory (<packdir> = <simudir>/pack/)
-packdir = simudir + "pack/"
+# absolute path to the simulation directory (<kmcDir>)
+kmcDir = "/Users/mariannelado-roy/kmc-simulation/"
+# absolute path to the package directory (<packdir> = <kmcDir>/pack/)
+packdir = kmcDir + "pack/"
 # absolute path to the output directory (<outdir>)
-outdir = simudir + "out/"
+outdir = kmcDir + "out/"
 
 # path to the directory where the position of the atoms will be written
 coorddir = outdir + "coordinates/"

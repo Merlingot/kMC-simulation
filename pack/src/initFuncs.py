@@ -16,8 +16,8 @@ import pack.src.kmc as kmc
 
 from pack.utilities.const import PREFACTOR, BOLTZMAN
 from pack.utilities.parameters import calculateDepositionArea, calculateTotalRate
-from pack.includes.latticeFunc import createLattice
-from pack.includes.procFuncs import createProcess
+from pack.include.latticeFunc import createLattice
+from pack.include.procFuncs import createProcess
 
 
 def init(nx, ny, deposition_rate, temperature):
