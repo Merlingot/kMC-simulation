@@ -1,5 +1,5 @@
 #######################################################
-# Module: gifFuncs
+# Module: animFuncs
 # Description: contains functions to make a gif out of
 # the data saved during the simulation.
 # Functions included:
@@ -17,7 +17,7 @@ from matplotlib.animation import FuncAnimation
 import os
 
 
-def animation(coorddir, rangeFile, gifFile=None):
+def animationFunc(coorddir, rangeFile, gifFile=None):
     """
     Function creating an animation and saving it.
     Args:

@@ -1,4 +1,4 @@
-#------------------------------------------------------
+#######################################################
 # Module: kmc.py
 # Description: contains all the low level functions
 #              needed to implement the kMC algorithm.
@@ -9,7 +9,7 @@
 #	- selectEvent
 #	- updateCumulRate
 #	- updateTime
-#------------------------------------------------------
+#######################################################
 
 import numpy
 import math

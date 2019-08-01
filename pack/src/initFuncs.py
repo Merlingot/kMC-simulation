@@ -33,16 +33,16 @@ def init(nx, ny, deposition_rate, temperature):
     t1 = time.clock()
     kmc.init_time = t1 - t0
 
-def initDirectories(outDir, coordDir, framesDir):
+def initDirectories(outdir, coorddir, framesdir):
     """ Verify is directories for file saving exists. If not creates the folder. """
     import os
-    
-    if not os.path.exists(outDir):
-        os.mkdir(outDir)
-    if not os.path.exists(coordDir):
-        os.mkdir(coordDir)
-    if not os.path.exists(framesDir):
-        os.mkdir(framesDir)
+
+    if not os.path.exists(outdir):
+        os.mkdir(outdir)
+    if not os.path.exists(coorddir):
+        os.mkdir(coorddir)
+    if not os.path.exists(framesdir):
+        os.mkdir(framesdir)
 
 def initLattice(nx,ny):
     """Creates the lattice"""

@@ -1,11 +1,11 @@
-#------------------------------------------------------
+#######################################################
 # Module : parameters
 # Description : functions to calculate things related to the deposition rate #
 # Included functions:
 #   - calculateTotalRate
 #   - calculateDepositionArea
 # Unit cell dimensions : [0,0] to [a/2, 2*a/sqrt(3)]
-#------------------------------------------------------
+#######################################################
 
 from math import sqrt
 from pack.utilities.const import LATTICE_PARAMETER, MASS_DENSITY, AVOGADRO_NUMBER, ATOMIC_MASS

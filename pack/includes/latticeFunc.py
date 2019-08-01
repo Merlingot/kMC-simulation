@@ -1,9 +1,9 @@
-#------------------------------------------------------
+#######################################################
 # Module : latticeFunc
 # Description: contains the function to create a
 #              Lattice Class instance
 # Function included: createLattice
-#------------------------------------------------------
+#######################################################
 
 
 import numpy as np

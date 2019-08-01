@@ -1,4 +1,4 @@
-#------------------------------------------------------
+#######################################################
 # Module: procFuncs
 # Description: module containing the function to create
 # 			   Process Class instances.
@@ -8,7 +8,7 @@
 #	- equivalent
 #	- replaceZeros
 #	- showConfig
-#------------------------------------------------------
+#######################################################
 
 
 from itertools import chain

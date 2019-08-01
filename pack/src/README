@@ -3,10 +3,14 @@ Data structures used in kmc.py module:
 static arrays:
 	nb_of_process
 	proc_list
-	total_deposition_rate  
+	total_deposition_rate
 static scalars:
 	rate_constants
 	deposition_ids
+	total_deposition_rate
+	area
+	lx
+	ly
 
 dynamic arrays:
 	active_sites

@@ -1,4 +1,4 @@
-#------------------------------------------------------
+#######################################################
 # Module: runProc
 # Description: functions needed to run a kmc step & to
 #              execute a specific process on a specific
@@ -11,7 +11,7 @@
 #	- diffusion
 #	- createMolecule
 #	- separateMolecule
-#------------------------------------------------------
+#######################################################
 
 
 import numpy
@@ -23,13 +23,13 @@ import pack.src.kmc as kmc
 from pack.src.saveFuncs import writePositions, saveFrames
 
 
-def doSteps( n, coordDir, undefinedFile, frameDir):
+def doSteps( n, coorddir, undefinedFile, framesdir):
     """
     Performs n kMC step.
     Args
         n (int) : Number of kMC steps to run
 	undefinedFile (str) : file name to write undefined configurations
-	coordDir (str) : directory where to write coordinates of atoms
+	coorddir (str) : directory where to write coordinates of atoms
 	TOTAL_DEPOSITON_RATE (float) : total deposition rate
     Returns
         stop (Bool) : indicates if the simulation had to be stopped
@@ -63,10 +63,10 @@ def doSteps( n, coordDir, undefinedFile, frameDir):
             kmc.steps += 1
             print( 'step: {} | process: {} | time: {:.6f} | runtime: {:.6f}'.format( kmc.steps,  PROC.name, kmc.time, kmc.runtime  ) )
 
-            writePositions('{}step_{}.txt'.format(coordDir, steps_done))
+            writePositions('{}step_{}.txt'.format(coorddir, steps_done))
 
             # saveFrames: This will save an image of each step of the simulation. Only for testing purpose. Will slow down the simulation and take enormous space.
-            # saveFrames( frameDir, kmc.steps)
+            # saveFrames( framesdir, kmc.steps)
 
         else:
             stop = True

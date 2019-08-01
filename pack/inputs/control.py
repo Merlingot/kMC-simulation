@@ -18,9 +18,9 @@ packdir = simudir + "pack/"
 outdir = simudir + "out/"
 
 # path to the directory where the position of the atoms will be written
-coordDir = outdir + "coordinates/"
+coorddir = outdir + "coordinates/"
 # path to the directory where to save the frames
-frameDir = outdir + "frames/"
+framesdir = outdir + "frames/"
 
 # path to the file where the results of the simulation will be written
 resultFile = outdir + "results.txt"

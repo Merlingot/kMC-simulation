@@ -1,4 +1,4 @@
-#------------------------------------------------------
+#######################################################
 # Module: saveFuncs
 # Description : Module containing the functions to save
 #               the data/results during the simulation.
@@ -7,12 +7,11 @@
 #   - writePositions
 #   - writeRange
 #   - saveFrames
-#
-# to do : change the frequency of saving.
-#------------------------------------------------------
+#######################################################
 
 
 import numpy as np
+import matplotlib.pyplot as plt
 
 import pack.src.kmc as kmc
 
@@ -65,7 +64,7 @@ def saveFrames(folder, n):
     The image is saved in folder under the name fig_n.png.
     This is used for verification purpose.
     """
-    import matplotlib.pyplot as plt
+
     fig = plt.figure()
     ax = fig.add_subplot(111)
     plt.xlim(kmc.lx*(-0.1), kmc.lx*1.1)
@@ -76,7 +75,6 @@ def saveFrames(folder, n):
 
     x = [site.coordinates[0] for site in kmc.lattice.sites if site.occupancy>0]
     y = [site.coordinates[1] for site in kmc.lattice.sites if site.occupancy>0]
-    # o = [site.occupancy for site in kmc.lattice.sites if site.occupancy>0]
 
     plt.plot(xnull, ynull, 'ko', markersize=1, fillstyle='none')
     plt.plot(x, y, 'ro', markersize=1)
