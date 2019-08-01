@@ -13,7 +13,7 @@ import numpy as np
 import os
 
 # package functions
-from pack.src.initFuncs import init, initDirectories
+from pack.src.initFuncs import init, initDirectoriesandFiles
 from pack.src.run import doSteps
 from pack.src.saveFuncs import writeResults, writeRange
 
@@ -29,7 +29,7 @@ def main():
 
 	# Initialization
 	print('Initialization ...')
-	initDirectories(ctrl.outdir, ctrl.coorddir, ctrl.framesdir)
+	initDirectoriesandFiles(ctrl.outdir, ctrl.coorddir, ctrl.framesdir, ctrl.undefinedFile)
 	init(ctrl.nx, ctrl.ny, ctrl.deposition_rate, ctrl.temperature)
 
 	# Run n steps

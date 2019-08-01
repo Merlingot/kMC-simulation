@@ -33,16 +33,22 @@ def init(nx, ny, deposition_rate, temperature):
     t1 = time.clock()
     kmc.init_time = t1 - t0
 
-def initDirectories(outdir, coorddir, framesdir):
-    """ Verify is directories for file saving exists. If not creates the folder. """
+def initDirectoriesandFiles(outdir, coorddir, framesdir, undefinedFile):
+    """ Verify is directories for file saving exists. If not creates the folder. Remove content from the undefinedFile if it already exists. """
     import os
 
+    # Make needed directories
     if not os.path.exists(outdir):
         os.mkdir(outdir)
     if not os.path.exists(coorddir):
         os.mkdir(coorddir)
     if not os.path.exists(framesdir):
         os.mkdir(framesdir)
+    # Remove content of file
+    if os.path.exists(undefinedFile):
+        f=open(undefinedFile, 'w')
+        f.close()
+
 
 def initLattice(nx,ny):
     """Creates the lattice"""
