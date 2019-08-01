@@ -1,13 +1,13 @@
-#------------------------------------------------------
+#######################################################
 # Executable file: main
 # Description: file to be executed to run a simulation
 # 			   not interactively.
 # How to run:
 # 	$ cd <simudir>
-# 	$ python <dir>/main
+# 	$ python main.py
 # Function included :
 #	- main
-#------------------------------------------------------
+#######################################################
 
 import numpy as np
 
@@ -43,7 +43,5 @@ def main():
 
 	return status
 
-
-#### EXECUTE SIMULATION ####
-status = main()
-############################
+# Execute main function
+main()
