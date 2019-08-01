@@ -7,7 +7,7 @@ $ cd <kmcDir>
 $ python main.py
 ```
 ## Input files
-The kmc-simulation requires information from two input files, the control parameter file and the kmc processes data file. 
+The kmc-simulation requires information from two input files. Theses are located in the `<kmcDir>/inputs/` directory.
 #### Control parameter file
 File consisting of statements of the form:
 ``` 
@@ -22,7 +22,7 @@ The parameters defined in this file are:
 #### Processes data file
 File in which the kmc processes must be defined. 
 ## Output files
-Output files are stored in the `<kmc>/out` directory.
+Output files are generated in the `<kmc>/out` directory.
 #### Coordinates outputs
 In the `<kmcDir>/out/coordinates/` directory  .txt files containing the coordinates of atoms and molecules are stored for each kmc step during the simulation. The header of the file specifies the step and the simulation time. 
 #### Result files
