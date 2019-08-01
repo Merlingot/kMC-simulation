@@ -1,10 +1,11 @@
 #######################################################
 # Module: animFuncs
-# Description: contains functions to make a gif out of
-# the data saved during the simulation.
+# Description: contains functions to make an animation
+# out of the data saved during the simulation. Can be
+# saved as a gif file.
 # Functions included:
 #    - read_data
-#    - animation
+#    - animationFunc
 #       - put_data
 #       - init_anim
 # Note : needs imagemagick to save the gif file.

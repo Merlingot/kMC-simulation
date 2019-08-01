@@ -6,7 +6,6 @@
 #   $ python do_animation.py
 #######################################################
 
-
 import pack.inputs.control as ctrl
 from pack.tools.animFuncs import animationFunc
 
