@@ -3,7 +3,7 @@
 # Description: functions needed to run a kmc step & to
 #              execute a specific process on a specific
 #              lattice site.
-#Functions included:
+# Functions included:
 #   - doSteps
 #   - decisionTree
 #	- put
