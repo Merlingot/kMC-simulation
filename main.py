@@ -1,7 +1,6 @@
 #######################################################
 # Executable file: main
-# Description: file to be executed to run a simulation
-# 			   not interactively.
+# Description: file to be executed to run a simulation.
 # How to run:
 # 	$ cd <simudir>
 # 	$ python main.py
