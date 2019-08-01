@@ -11,17 +11,18 @@
 # to do : change the frequency of saving.
 #------------------------------------------------------
 
+
 import numpy as np
 
 import pack.src.kmc as kmc
 
 
 def writeResults(filename, status):
-    """ Writes the results of the simulation """
+    """ Writes the results of the simulation to filename """
 
     with open(filename, 'w+') as resultFile:
         resultFile.write('Nombre de sites: {} \n'.format(kmc.sites_count))
-        # resultFile.write('Aire: {:.6f} microm^2 \n'.format(area*1e12))
+        resultFile.write('Aire: {:.6f} micrometer squared \n'.format(kmc.area*1e12))
         resultFile.write('Nombre de processus: {}\n'.format(kmc.nb_of_process))
         resultFile.write('Temps initialisation (runtime): {:.6f} s.\n'.format(kmc.init_time) )
         average_time = np.mean(kmc.runtime_steps)
@@ -41,29 +42,28 @@ def writeResults(filename, status):
 
 def writePositions(filename):
     """ Writes the position of atoms and molecules to a file
-    @ a specific time t and step n"""
+    at a specific time t and step n"""
     with open(filename, 'w+') as posFile:
-        posFile.write('# nStep: {} s. \n'.format(kmc.steps))
-        posFile.write('# Time: {} s. \n\n'.format(kmc.time))
+        posFile.write('#nStep {} \n'.format(kmc.steps))
+        posFile.write('#Time {} \n\n'.format(kmc.time))
 
     with open(filename, 'a') as posFile:
         for site in kmc.lattice.sites:
             if site.occupancy > 0:
                 posFile.write( '{} {} {} \n'.format(site.coordinates[0], site.coordinates[1], site.occupancy) )
-            # posFile.write( '{} {} {} \n'.format(site.coordinates[0], site.coordinates[1], site.occupancy) )
 
 def writeRange(filename):
+    """writes the lenght of the simulation domain to a file"""
     with open(filename, 'w+') as rangeFile:
-        rangeFile.write( '#x y \n')
-        rangeFile.write( '0 0 \n')
+        rangeFile.write( '# Lx Ly \n')
         rangeFile.write( '{} {} \n'.format(kmc.lx, kmc.ly))
-
 
 
 def saveFrames(folder, n):
     """
-    Save all the frames of the simulation
-    This is made for verification purpose
+    Produces and save an image of the lattice after the n th kmc step.
+    The image is saved in folder under the name fig_n.png.
+    This is used for verification purpose.
     """
     import matplotlib.pyplot as plt
     fig = plt.figure()
