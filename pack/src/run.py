@@ -11,6 +11,7 @@
 #	- diffusion
 #	- createMolecule
 #	- separateMolecule
+#   - writeUndefined
 #######################################################
 
 
@@ -161,8 +162,9 @@ def put(SITE, nb_of_atoms, filename):
         for proc in processes_to_delete:
             kmc.delEvent(proc, SITE.number)
     else:
-        with open(filename, 'a+') as f:
-            f.write( str( SITE.id )+ '\n' )
+        writeUndefined(SITE.id, filename)
+        # with open(filename, 'a+') as f:
+        #     f.write( str( SITE.id )+ '\n' )
 
     for neighbour in SITE.neighbours:
         _processes_to_delete = kmc.proc_adress.get( neighbour.id )
@@ -170,8 +172,9 @@ def put(SITE, nb_of_atoms, filename):
             for proc in _processes_to_delete :
                 kmc.delEvent(proc, neighbour.number)
         else :
-            with open(filename, 'a+') as f:
-            	f.write( str( neighbour.id )+ '\n' )
+            writeUndefined(neighbour.id, filename)
+            # with open(filename, 'a+') as f:
+            # 	f.write( str( neighbour.id )+ '\n' )
 
 
     SITE.occupied = True
@@ -186,8 +189,9 @@ def put(SITE, nb_of_atoms, filename):
         for proc in processes_to_add :
             kmc.addEvent(proc, SITE.number)
     else :
-        with open(filename, 'a+') as f:
-            f.write( str( SITE.id )+ '\n' )
+        writeUndefined(SITE.id, filename)
+        # with open(filename, 'a+') as f:
+        #     f.write( str( SITE.id )+ '\n' )
 
     for neighbour in SITE.neighbours:
         neighbour.id = neighbour.identity()
@@ -196,8 +200,9 @@ def put(SITE, nb_of_atoms, filename):
             for proc in _processes_to_add :
                 kmc.addEvent(proc, neighbour.number)
         else:
-            with open(filename, 'a+') as f:
-            	f.write( str( neighbour.id )+ '\n' )
+            writeUndefined(neighbour.id, filename)
+            # with open(filename, 'a+') as f:
+            # 	f.write( str( neighbour.id )+ '\n' )
 
 
 
@@ -214,8 +219,9 @@ def remove(SITE, filename):
         for proc in processes_to_delete :
             kmc.delEvent(proc, SITE.number)
     else:
-        with open(filename, 'a+') as f:
-            f.write( str( SITE.id )+ '\n' )
+        writeUndefined(SITE.id, filename)
+        # with open(filename, 'a+') as f:
+        #     f.write( str( SITE.id )+ '\n' )
 
 
     for neighbour in SITE.neighbours:
@@ -224,8 +230,9 @@ def remove(SITE, filename):
             for proc in _processes_to_delete :
                 kmc.delEvent(proc, neighbour.number)
         else :
-            with open(filename, 'a+') as f:
-            	f.write( str( neighbour.id )+ '\n' )
+            writeUndefined(neighbour.id, filename)
+            # with open(filename, 'a+') as f:
+            # 	f.write( str( neighbour.id )+ '\n' )
 
 
     SITE.occupied = False
@@ -238,8 +245,9 @@ def remove(SITE, filename):
         for proc in processes_to_add :
             kmc.addEvent(proc, SITE.number)
     else:
-        with open(filename, 'a+') as f:
-            f.write( str( SITE.id )+ '\n' )
+        writeUndefined(SITE.id, filename)
+        # with open(filename, 'a+') as f:
+        #     f.write( str( SITE.id )+ '\n' )
 
     for neighbour in SITE.neighbours:
         neighbour.id = neighbour.identity()
@@ -248,8 +256,9 @@ def remove(SITE, filename):
             for proc in _processes_to_add :
                 kmc.addEvent(proc, neighbour.number)
         else :
-            with open(filename, 'a+') as f:
-            	f.write( str( neighbour.id )+ '\n' )
+            writeUndefined(neighbour.id, filename)
+            # with open(filename, 'a+') as f:
+            # 	f.write( str( neighbour.id )+ '\n' )
 
 
 
@@ -267,8 +276,9 @@ def diffusion(OLD, NEW, filename):
             for proc in processes_to_delete :
                 kmc.delEvent(proc, site.number)
         else:
-            with open(filename, 'a+') as f:
-            	f.write( str( site.id )+ '\n' )
+            writeUndefined(site.id, filename)
+            # with open(filename, 'a+') as f:
+            # 	f.write( str( site.id )+ '\n' )
 
     NEW.occupied = True
     NEW.occupancy = OLD.occupancy
@@ -286,8 +296,9 @@ def diffusion(OLD, NEW, filename):
             for proc in processes_to_add :
                 kmc.addEvent(proc, site.number)
         else :
-            with open(filename, 'a+') as f:
-                f.write( str( site.id )+ '\n' )
+            writeUndefined(site.id, filename)
+            # with open(filename, 'a+') as f:
+            #     f.write( str( site.id )+ '\n' )
 
 
 
@@ -313,8 +324,9 @@ def createMolecule(OLDS, NEW, filename):
             for proc in processes_to_delete :
                 kmc.delEvent(proc, site.number)
         else:
-            with open(filename, 'a+') as f:
-                f.write( str( site.id )+ '\n' )
+            writeUndefined(site.id, filename)
+            # with open(filename, 'a+') as f:
+            #     f.write( str( site.id )+ '\n' )
 
     NEW.occupied = True
     for old in OLDS:
@@ -334,8 +346,9 @@ def createMolecule(OLDS, NEW, filename):
             for proc in processes_to_add :
                 kmc.addEvent(proc, site.number)
         else:
-            with open(filename, 'a+') as f:
-                f.write( str( site.id )+ '\n')
+            writeUndefined(site.id, filename)
+            # with open(filename, 'a+') as f:
+            #     f.write( str( site.id )+ '\n')
 
 
 def separateMolecule(SITE, NEWS, filename):
@@ -360,8 +373,9 @@ def separateMolecule(SITE, NEWS, filename):
             for proc in processes_to_delete :
                 kmc.delEvent(proc, site.number)
         else :
-            with open(filename, 'a+') as f:
-                f.write( str( site.id )+ '\n' )
+            writeUndefined(site.id, filename)
+            # with open(filename, 'a+') as f:
+            #     f.write( str( site.id )+ '\n' )
 
 
     SITE.is_occupied = False
@@ -383,5 +397,19 @@ def separateMolecule(SITE, NEWS, filename):
             for proc in processes_to_add :
                 kmc.addEvent(proc, site.number)
         else:
-            with open(filename, 'a+') as f:
-                f.write( str( site.id )+ '\n' )
+            writeUndefined(site.id, filename)
+            # with open(filename, 'a+') as f:
+            #     f.write( str( site.id )+ '\n' )
+
+
+def writeUndefined(number, filename):
+    string = str(number) + '\n'
+    found = False
+    with open(filename, 'r+') as f:
+        for line in f:
+            if string==line:
+                found=True
+                break
+    if not found:
+        with open(filename, 'a') as f:
+            f.write(string)
