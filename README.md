@@ -8,7 +8,7 @@ $ python main.py
 ```
 ## Input files
 The kmc-simulation requires information from two input files, the control parameter file and the kmc processes data file. 
-### Control parameter file
+#### Control parameter file
 File consisting of statements of the form:
 ``` 
 parameter = value 
@@ -19,7 +19,7 @@ The parameters defined in this file are:
 - Temperature
 - Deposition rate
 - Directories and file names for outputs
-### Processes data file
+#### Processes data file
 File in which the kmc processes must be defined. 
 ## Output files
 #### Coordinates outputs
