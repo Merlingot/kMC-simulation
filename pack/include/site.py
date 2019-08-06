@@ -32,7 +32,7 @@ class Site:
         self.neighbours_nb = None
 
         # Configuration state of this site. Initialized in Module2.
-        self.id = None
+        self.conf = None
 
 
     def identity( self ):

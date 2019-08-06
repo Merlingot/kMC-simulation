@@ -86,7 +86,7 @@ def initStatic():
     count = 0
     for proc in kmc.proc_list:
         proc.number = count
-        kmc.proc_adress.setdefault( proc.id , [] ).append( proc.number )
+        kmc.proc_adress.setdefault( proc.conf , [] ).append( proc.number )
         count += 1
     kmc.nb_of_process  = len( kmc.proc_list )
     kmc.rate_constants = np.array( [ process.rate for process in kmc.proc_list ] )
@@ -114,7 +114,7 @@ def initEvents():
     """
 
     for site in kmc.lattice.sites :
-        possible_processes_nb = kmc.proc_adress.get( site.id )
+        possible_processes_nb = kmc.proc_adress.get( site.conf )
         if possible_processes_nb :
             for proc_nb in possible_processes_nb :
                 kmc.addEvent( proc_nb, site.number )

@@ -31,7 +31,7 @@ class Process:
         self.action_sites = action_sites
         self.prefactor = prefactor
 
-        self.id = None
+        self.conf = None
         self.initInfo()
 
         ##Seulement pour la diffusion des ATOMES. On calcule l'energie d'activation avec le bond counting scheme
@@ -47,7 +47,7 @@ class Process:
         bin_id = ''
         for i in self.configuration:
             bin_id += str(i)
-        self.id = int(bin_id, 5) #Nombre en base 5
+        self.conf = int(bin_id, 5) #Nombre en base 5
 
     def calculerEnergieDiffusion(self):
 

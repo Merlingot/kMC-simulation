@@ -11,7 +11,7 @@ temperature=300
 deposition_rate=50
 
 # absolute path to the simulation directory (<kmcDir>)
-kmcDir = "/Users/mariannelado-roy/kmc-simulation/"
+kmcDir = ""
 # absolute path to the package directory (<packdir> = <kmcDir>/pack/)
 packdir = kmcDir + "pack/"
 # absolute path to the output directory (<outdir>)

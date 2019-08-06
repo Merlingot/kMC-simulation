@@ -47,7 +47,7 @@ def addEvent(proc_number, site_number):
         None
     """
     ## Safety net ##################
-    assert (proc_list[proc_number].id == lattice.sites[site_number].id), 'selected event has unmatching process id and site id'
+    assert (proc_list[proc_number].conf == lattice.sites[site_number].conf), 'selected event has unmatching process id and site id'
     #################################
 
     active_sites[proc_number].append(site_number)

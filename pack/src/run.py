@@ -48,7 +48,7 @@ def doSteps( n, coorddir, undefinedFile, framesdir):
             SITE = kmc.lattice.getSite( selected_site_nb )
 
             # safety net ----------------------------------
-            assert (PROC.id == SITE.id), 'unmatching event has been selected'
+            assert (PROC.conf == SITE.conf), 'unmatching event has been selected'
             #----------------------------------------------
 
             decisionTree(PROC, SITE, undefinedFile)
@@ -156,25 +156,25 @@ def put(SITE, nb_of_atoms, filename):
         nb_of_atoms: number of atoms to put on this site
 	f (str) : filename where to write unrecognized processes
     """
-    processes_to_delete = kmc.proc_adress.get( SITE.id )
+    processes_to_delete = kmc.proc_adress.get( SITE.conf )
 
     if processes_to_delete:
         for proc in processes_to_delete:
             kmc.delEvent(proc, SITE.number)
     else:
-        writeUndefined(SITE.id, filename)
+        writeUndefined(SITE.conf, filename)
         # with open(filename, 'a+') as f:
-        #     f.write( str( SITE.id )+ '\n' )
+        #     f.write( str( SITE.conf )+ '\n' )
 
     for neighbour in SITE.neighbours:
-        _processes_to_delete = kmc.proc_adress.get( neighbour.id )
+        _processes_to_delete = kmc.proc_adress.get( neighbour.conf )
         if _processes_to_delete:
             for proc in _processes_to_delete :
                 kmc.delEvent(proc, neighbour.number)
         else :
-            writeUndefined(neighbour.id, filename)
+            writeUndefined(neighbour.conf, filename)
             # with open(filename, 'a+') as f:
-            # 	f.write( str( neighbour.id )+ '\n' )
+            # 	f.write( str( neighbour.conf )+ '\n' )
 
 
     SITE.occupied = True
@@ -183,26 +183,26 @@ def put(SITE, nb_of_atoms, filename):
     assert (SITE.occupancy < 5), 'More than 4 atoms on site'
     # -------------------------------
 
-    SITE.id = SITE.identity()
-    processes_to_add = kmc.proc_adress.get( SITE.id )
+    SITE.conf = SITE.identity()
+    processes_to_add = kmc.proc_adress.get( SITE.conf )
     if processes_to_add:
         for proc in processes_to_add :
             kmc.addEvent(proc, SITE.number)
     else :
-        writeUndefined(SITE.id, filename)
+        writeUndefined(SITE.conf, filename)
         # with open(filename, 'a+') as f:
-        #     f.write( str( SITE.id )+ '\n' )
+        #     f.write( str( SITE.conf )+ '\n' )
 
     for neighbour in SITE.neighbours:
-        neighbour.id = neighbour.identity()
-        _processes_to_add = kmc.proc_adress.get( neighbour.id )
+        neighbour.conf = neighbour.identity()
+        _processes_to_add = kmc.proc_adress.get( neighbour.conf )
         if _processes_to_add:
             for proc in _processes_to_add :
                 kmc.addEvent(proc, neighbour.number)
         else:
-            writeUndefined(neighbour.id, filename)
+            writeUndefined(neighbour.conf, filename)
             # with open(filename, 'a+') as f:
-            # 	f.write( str( neighbour.id )+ '\n' )
+            # 	f.write( str( neighbour.conf )+ '\n' )
 
 
 
@@ -214,51 +214,51 @@ def remove(SITE, filename):
 
     """
 
-    processes_to_delete = kmc.proc_adress.get( SITE.id )
+    processes_to_delete = kmc.proc_adress.get( SITE.conf )
     if processes_to_delete:
         for proc in processes_to_delete :
             kmc.delEvent(proc, SITE.number)
     else:
-        writeUndefined(SITE.id, filename)
+        writeUndefined(SITE.conf, filename)
         # with open(filename, 'a+') as f:
-        #     f.write( str( SITE.id )+ '\n' )
+        #     f.write( str( SITE.conf )+ '\n' )
 
 
     for neighbour in SITE.neighbours:
-        _processes_to_delete = kmc.proc_adress.get( neighbour.id )
+        _processes_to_delete = kmc.proc_adress.get( neighbour.conf )
         if _process_to_delete :
             for proc in _processes_to_delete :
                 kmc.delEvent(proc, neighbour.number)
         else :
-            writeUndefined(neighbour.id, filename)
+            writeUndefined(neighbour.conf, filename)
             # with open(filename, 'a+') as f:
-            # 	f.write( str( neighbour.id )+ '\n' )
+            # 	f.write( str( neighbour.conf )+ '\n' )
 
 
     SITE.occupied = False
     SITE.occupancy = 0
 
 
-    SITE.id = SITE.identity()
-    processes_to_add = kmc.proc_adress.get( SITE.id )
+    SITE.conf = SITE.identity()
+    processes_to_add = kmc.proc_adress.get( SITE.conf )
     if processes_to_add:
         for proc in processes_to_add :
             kmc.addEvent(proc, SITE.number)
     else:
-        writeUndefined(SITE.id, filename)
+        writeUndefined(SITE.conf, filename)
         # with open(filename, 'a+') as f:
-        #     f.write( str( SITE.id )+ '\n' )
+        #     f.write( str( SITE.conf )+ '\n' )
 
     for neighbour in SITE.neighbours:
-        neighbour.id = neighbour.identity()
-        _processes_to_add = kmc.proc_adress.get( neighbour.id )
+        neighbour.conf = neighbour.identity()
+        _processes_to_add = kmc.proc_adress.get( neighbour.conf )
         if _processes_to_add:
             for proc in _processes_to_add :
                 kmc.addEvent(proc, neighbour.number)
         else :
-            writeUndefined(neighbour.id, filename)
+            writeUndefined(neighbour.conf, filename)
             # with open(filename, 'a+') as f:
-            # 	f.write( str( neighbour.id )+ '\n' )
+            # 	f.write( str( neighbour.conf )+ '\n' )
 
 
 
@@ -271,14 +271,14 @@ def diffusion(OLD, NEW, filename):
     site_list = list ( kmc.lattice.getSite( site ) for site in nb_list )
 
     for site in site_list:
-        processes_to_delete = kmc.proc_adress.get( site.id )
+        processes_to_delete = kmc.proc_adress.get( site.conf )
         if processes_to_delete:
             for proc in processes_to_delete :
                 kmc.delEvent(proc, site.number)
         else:
-            writeUndefined(site.id, filename)
+            writeUndefined(site.conf, filename)
             # with open(filename, 'a+') as f:
-            # 	f.write( str( site.id )+ '\n' )
+            # 	f.write( str( site.conf )+ '\n' )
 
     NEW.occupied = True
     NEW.occupancy = OLD.occupancy
@@ -290,15 +290,15 @@ def diffusion(OLD, NEW, filename):
     # -------------------------------
 
     for site in site_list:
-        site.id = site.identity()
-        processes_to_add = kmc.proc_adress.get( site.id )
+        site.conf = site.identity()
+        processes_to_add = kmc.proc_adress.get( site.conf )
         if processes_to_add :
             for proc in processes_to_add :
                 kmc.addEvent(proc, site.number)
         else :
-            writeUndefined(site.id, filename)
+            writeUndefined(site.conf, filename)
             # with open(filename, 'a+') as f:
-            #     f.write( str( site.id )+ '\n' )
+            #     f.write( str( site.conf )+ '\n' )
 
 
 
@@ -318,15 +318,15 @@ def createMolecule(OLDS, NEW, filename):
 
 
     for site in site_list:
-        processes_to_delete = kmc.proc_adress.get( site.id )
+        processes_to_delete = kmc.proc_adress.get( site.conf )
 
         if processes_to_delete:
             for proc in processes_to_delete :
                 kmc.delEvent(proc, site.number)
         else:
-            writeUndefined(site.id, filename)
+            writeUndefined(site.conf, filename)
             # with open(filename, 'a+') as f:
-            #     f.write( str( site.id )+ '\n' )
+            #     f.write( str( site.conf )+ '\n' )
 
     NEW.occupied = True
     for old in OLDS:
@@ -339,16 +339,16 @@ def createMolecule(OLDS, NEW, filename):
     # -------------------------------
 
     for site in site_list:
-        site.id = site.identity()
-        processes_to_add = kmc.proc_adress.get( site.id )
+        site.conf = site.identity()
+        processes_to_add = kmc.proc_adress.get( site.conf )
 
         if processes_to_add :
             for proc in processes_to_add :
                 kmc.addEvent(proc, site.number)
         else:
-            writeUndefined(site.id, filename)
+            writeUndefined(site.conf, filename)
             # with open(filename, 'a+') as f:
-            #     f.write( str( site.id )+ '\n')
+            #     f.write( str( site.conf )+ '\n')
 
 
 def separateMolecule(SITE, NEWS, filename):
@@ -368,14 +368,14 @@ def separateMolecule(SITE, NEWS, filename):
     site_list = [ kmc.lattice.getSite( nb ) for nb in nb_list ]
 
     for site in site_list:
-        processes_to_delete = kmc.proc_adress.get( site.id )
+        processes_to_delete = kmc.proc_adress.get( site.conf )
         if processes_to_delete:
             for proc in processes_to_delete :
                 kmc.delEvent(proc, site.number)
         else :
-            writeUndefined(site.id, filename)
+            writeUndefined(site.conf, filename)
             # with open(filename, 'a+') as f:
-            #     f.write( str( site.id )+ '\n' )
+            #     f.write( str( site.conf )+ '\n' )
 
 
     SITE.is_occupied = False
@@ -390,16 +390,16 @@ def separateMolecule(SITE, NEWS, filename):
 
 
     for site in site_list:
-        site.id = site.identity()
-        processes_to_add = kmc.proc_adress.get( site.id )
+        site.conf = site.identity()
+        processes_to_add = kmc.proc_adress.get( site.conf )
 
         if processes_to_add :
             for proc in processes_to_add :
                 kmc.addEvent(proc, site.number)
         else:
-            writeUndefined(site.id, filename)
+            writeUndefined(site.conf, filename)
             # with open(filename, 'a+') as f:
-            #     f.write( str( site.id )+ '\n' )
+            #     f.write( str( site.conf )+ '\n' )
 
 
 def writeUndefined(number, filename):
