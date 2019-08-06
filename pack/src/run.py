@@ -66,7 +66,7 @@ def doSteps( n, coorddir, undefinedFile, framesdir):
 
             writePositions('{}step_{}.txt'.format(coorddir, steps_done))
 
-            # saveFrames: This will save an image of each step of the simulation. Only for testing purpose. Will slow down the simulation and take enormous space.
+            # saveFrames: This will save an image of each step of the simulation. Only for testing purpose. Will slow down the simulation and take enormous space. Uncomment next line to activate.
             # saveFrames( framesdir, kmc.steps)
 
         else:
@@ -163,8 +163,7 @@ def put(SITE, nb_of_atoms, filename):
             kmc.delEvent(proc, SITE.number)
     else:
         writeUndefined(SITE.conf, filename)
-        # with open(filename, 'a+') as f:
-        #     f.write( str( SITE.conf )+ '\n' )
+
 
     for neighbour in SITE.neighbours:
         _processes_to_delete = kmc.proc_adress.get( neighbour.conf )
@@ -173,8 +172,7 @@ def put(SITE, nb_of_atoms, filename):
                 kmc.delEvent(proc, neighbour.number)
         else :
             writeUndefined(neighbour.conf, filename)
-            # with open(filename, 'a+') as f:
-            # 	f.write( str( neighbour.conf )+ '\n' )
+
 
 
     SITE.occupied = True
@@ -190,8 +188,7 @@ def put(SITE, nb_of_atoms, filename):
             kmc.addEvent(proc, SITE.number)
     else :
         writeUndefined(SITE.conf, filename)
-        # with open(filename, 'a+') as f:
-        #     f.write( str( SITE.conf )+ '\n' )
+
 
     for neighbour in SITE.neighbours:
         neighbour.conf = neighbour.identity()
@@ -201,8 +198,7 @@ def put(SITE, nb_of_atoms, filename):
                 kmc.addEvent(proc, neighbour.number)
         else:
             writeUndefined(neighbour.conf, filename)
-            # with open(filename, 'a+') as f:
-            # 	f.write( str( neighbour.conf )+ '\n' )
+
 
 
 
@@ -220,8 +216,7 @@ def remove(SITE, filename):
             kmc.delEvent(proc, SITE.number)
     else:
         writeUndefined(SITE.conf, filename)
-        # with open(filename, 'a+') as f:
-        #     f.write( str( SITE.conf )+ '\n' )
+
 
 
     for neighbour in SITE.neighbours:
@@ -231,8 +226,7 @@ def remove(SITE, filename):
                 kmc.delEvent(proc, neighbour.number)
         else :
             writeUndefined(neighbour.conf, filename)
-            # with open(filename, 'a+') as f:
-            # 	f.write( str( neighbour.conf )+ '\n' )
+
 
 
     SITE.occupied = False
@@ -246,8 +240,7 @@ def remove(SITE, filename):
             kmc.addEvent(proc, SITE.number)
     else:
         writeUndefined(SITE.conf, filename)
-        # with open(filename, 'a+') as f:
-        #     f.write( str( SITE.conf )+ '\n' )
+
 
     for neighbour in SITE.neighbours:
         neighbour.conf = neighbour.identity()
@@ -257,8 +250,7 @@ def remove(SITE, filename):
                 kmc.addEvent(proc, neighbour.number)
         else :
             writeUndefined(neighbour.conf, filename)
-            # with open(filename, 'a+') as f:
-            # 	f.write( str( neighbour.conf )+ '\n' )
+
 
 
 
@@ -277,8 +269,7 @@ def diffusion(OLD, NEW, filename):
                 kmc.delEvent(proc, site.number)
         else:
             writeUndefined(site.conf, filename)
-            # with open(filename, 'a+') as f:
-            # 	f.write( str( site.conf )+ '\n' )
+
 
     NEW.occupied = True
     NEW.occupancy = OLD.occupancy
@@ -297,8 +288,7 @@ def diffusion(OLD, NEW, filename):
                 kmc.addEvent(proc, site.number)
         else :
             writeUndefined(site.conf, filename)
-            # with open(filename, 'a+') as f:
-            #     f.write( str( site.conf )+ '\n' )
+
 
 
 
@@ -325,8 +315,7 @@ def createMolecule(OLDS, NEW, filename):
                 kmc.delEvent(proc, site.number)
         else:
             writeUndefined(site.conf, filename)
-            # with open(filename, 'a+') as f:
-            #     f.write( str( site.conf )+ '\n' )
+
 
     NEW.occupied = True
     for old in OLDS:
@@ -347,8 +336,7 @@ def createMolecule(OLDS, NEW, filename):
                 kmc.addEvent(proc, site.number)
         else:
             writeUndefined(site.conf, filename)
-            # with open(filename, 'a+') as f:
-            #     f.write( str( site.conf )+ '\n')
+
 
 
 def separateMolecule(SITE, NEWS, filename):
@@ -374,8 +362,7 @@ def separateMolecule(SITE, NEWS, filename):
                 kmc.delEvent(proc, site.number)
         else :
             writeUndefined(site.conf, filename)
-            # with open(filename, 'a+') as f:
-            #     f.write( str( site.conf )+ '\n' )
+
 
 
     SITE.is_occupied = False
@@ -398,8 +385,7 @@ def separateMolecule(SITE, NEWS, filename):
                 kmc.addEvent(proc, site.number)
         else:
             writeUndefined(site.conf, filename)
-            # with open(filename, 'a+') as f:
-            #     f.write( str( site.conf )+ '\n' )
+        
 
 
 def writeUndefined(number, filename):
