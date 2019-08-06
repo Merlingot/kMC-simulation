@@ -22,9 +22,7 @@ from pack.include.latticeFunc import createLattice
 from pack.utilities.neighbourgsDicts import neighboursDict, neighboursDict1, neighboursDict2
 
 
-def createProcess( name, category, activation_energy = None, prefactor = None,
-new_sites = None, old_sites = None, empty = None, shell = None, shells = None,
-sym6 = False, sym3 = False, atoms = None, sb2=None, sb4 = None, unid = None):
+def createProcess( name, category, activation_energy = None, prefactor = None, rate=None, new_sites = None, old_sites = None, empty = None, shell = None, shells = None, sym6 = False, sym3 = False, atoms = None, sb2=None, sb4 = None, unid = None):
     """
     Function needed to generate Process Class object
     Args:
@@ -33,6 +31,7 @@ sym6 = False, sym3 = False, atoms = None, sb2=None, sb4 = None, unid = None):
     kArgs :
         activation_energy (Float)
         prefactor (Float)
+        rate (Float) : transition rate
         new_sites : (Int or Tuple(int))
         old_sites : (Int or Tuple(int))
         empty (Tuple(Int)) : id numbers of empty sites
@@ -47,7 +46,12 @@ sym6 = False, sym3 = False, atoms = None, sb2=None, sb4 = None, unid = None):
     Returns:
         List(Process) : list of all equivalent processes
     """
+    # input sanity : verify where either in one or the other of the 2 cases, not both !
+    case1 = activation_energy!=None and rate==None
+    case2 = activation_energy==None and rate!=None
+    assert( not (case1 and case2) ), 'Input activation energy OR transition rate. If process is thermally activated enter activation_energy. If not, enter the rate'
 
+    # rest of the function
     list_of_equiv_proc = []
 
     t = list(np.arange(0,19))
@@ -125,7 +129,7 @@ sym6 = False, sym3 = False, atoms = None, sb2=None, sb4 = None, unid = None):
         else:
             actionsite = list_actionsites[i]
 
-        list_of_equiv_proc.append( Process(name__, category, config, activation_energy, actionsite, prefactor ) )
+        list_of_equiv_proc.append( Process(name__, category, config, activation_energy=activation_energy, action_sites=actionsite, prefactor=prefactor, rate=rate ) )
 
     return list_of_equiv_proc
 

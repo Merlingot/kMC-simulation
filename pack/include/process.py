@@ -12,7 +12,7 @@ from pack.utilities.bondCounting import bond_dicts, theta
 
 class Process:
 
-    def __init__(self, name, category, configuration, activation_energy=None, action_sites = None, prefactor = None):
+    def __init__(self, name, category, configuration, activation_energy=None, action_sites = None, prefactor = None, rate=None):
         """
         Args:
             name (Str)    :  process name
@@ -30,6 +30,8 @@ class Process:
         self.activation_energy = activation_energy
         self.action_sites = action_sites
         self.prefactor = prefactor
+
+        self.rate=rate
 
         self.conf = None
         self.initInfo()
@@ -84,7 +86,8 @@ class Process:
         temperature : from parameters.py
         boltzman : from parameters.py
         """
-        if self.prefactor:
-            return self.prefactor*np.exp(-self.activation_energy/(boltzman*temperature))
-        else:
-            return prefactor*np.exp(-self.activation_energy/(boltzman*temperature))
+        if not self.rate:
+            if self.prefactor:
+                return self.prefactor*np.exp(-self.activation_energy/(boltzman*temperature))
+            else:
+                return prefactor*np.exp(-self.activation_energy/(boltzman*temperature))
