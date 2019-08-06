@@ -48,7 +48,9 @@ def initDirectoriesandFiles(outdir, coorddir, framesdir, undefinedFile):
     if os.path.exists(undefinedFile):
         f=open(undefinedFile, 'w')
         f.close()
-
+    else:
+        f=open(undefinedFile, 'w+')
+        f.close()
 
 def initLattice(nx,ny):
     """Creates the lattice"""
