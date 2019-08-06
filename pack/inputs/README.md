@@ -17,7 +17,7 @@ All paths can be defined relatively to the `<kmcDir>` directory
 
 Parameter | String | Description| Additional note
 --- | --- | --- | ---
-`packdir`| string | Package directory <kmcDir>/pack/ |
+`packdir`| string | Package directory |
 `outdir`| string| string | Principal output directory| Directory containing all output files.
 `coordir`| string |  Output directory for coordinates files | At each kmc step, a .txt file will be written in that folder containing the coordinates of all occupied site and their occupancy. 
 `framesdir`| string| Output directory for frames files | If enabled in the source code, at each kmc step, a png image of the lattice will be printed to this directory. This should only be used for verification purposes as it slows down the simulation considerably.
