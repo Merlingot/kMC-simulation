@@ -3,12 +3,15 @@
 # number of kmc steps
 nsteps = 100
 # number of repetition of the unit cell
-nx = 20
+# for reference the size of the unit cell is a/2 x 2*a/sqrt(3)
+nx = 40
 ny = 20
 # temperature of substrate (Kelvin)
 temperature=300
 # deposition rate (Angstrom/second)
 deposition_rate=50
+# size of island triangle
+lisland = (4.28*1e-10/2)*20
 
 
 # relative path to the package directory (<packdir> = <kmcDir>/pack/)
@@ -21,7 +24,8 @@ coorddir = outdir + "coordinates/"
 # relative to the directory where to save the frames
 framesdir = outdir + "frames/"
 
-
+# Memory usage file
+memFile = outdir + "memory.txt"
 # relative path to the file where the kmc processes statistics will be written
 statFile = outdir + "statistics.txt"
 # relative path to the file where the kmc process selected at a step n will be written

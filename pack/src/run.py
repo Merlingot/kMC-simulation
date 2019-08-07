@@ -38,6 +38,10 @@ def doSteps( n, coorddir, procFile, framesdir, undefinedFile):
     """
     steps_done = 0
     stop = False
+
+    # save the first frame
+    saveFrames( framesdir, kmc.steps)
+
     while steps_done < n:
         t0 = time.clock()
         selected_process_nb, selected_site_nb = kmc.selectEvent()
@@ -74,6 +78,9 @@ def doSteps( n, coorddir, procFile, framesdir, undefinedFile):
             stop = True
             print('Simulation has been stopped after the completion of the kmc step # {}'.format(kmc.steps ) )
             break
+
+    # save the last frame
+    saveFrames( framesdir, kmc.steps)
 
     return stop
 

@@ -12,6 +12,7 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
+from pympler import asizeof
 
 import pack.src.kmc as kmc
 
@@ -21,7 +22,7 @@ def writeResults(filename, status):
 
     with open(filename, 'w+') as resultFile:
         resultFile.write('Nombre de sites: {} \n'.format(kmc.sites_count))
-        resultFile.write('Aire: {:.6f} microm. carrés \n'.format(kmc.area*1e12))
+        resultFile.write('Aire: {:.6f} microm. squarred \n'.format(kmc.area*1e12))
         resultFile.write('Nombre de processus: {}\n'.format(kmc.nb_of_process))
         resultFile.write('Temps initialisation (runtime): {:.6f} s.\n'.format(kmc.init_time) )
         average_time = np.mean(kmc.runtime_steps)
@@ -51,7 +52,7 @@ def writeQuickStats(filename, proc):
     """ Writes the kmc process selected at a step n. File already initiated."""
     with open(filename, 'a+') as procFile:
         procFile.write('#nStep={} Time={}\n'.format(kmc.steps, kmc.time))
-        procFile.write( '{}   {}   {}   {:.0f}\n'.format( proc.name, proc.category, proc.number, kmc.process_stats[proc.number] ) )
+        procFile.write( '{}   {}   {}  {:.0f}\n'.format( proc.name, proc.category, proc.number, kmc.process_stats[proc.number] ) )
 
 
 def writePositions(filename):
@@ -64,11 +65,21 @@ def writePositions(filename):
             if site.occupancy > 0:
                 posFile.write( '{} {} {} \n'.format(site.coordinates[0], site.coordinates[1], site.occupancy) )
 
+def writeMemUsage(filename):
+    """Writes the memory size of the process list and lattice objects"""
+    with open(filename, 'w+') as memFile:
+        memFile.write('Memory size of process list: {} Bytes\n'.format(
+        	asizeof.asizeof(kmc.proc_list)) )
+        memFile.write('Memory size of lattice: {} Bytes\n'.format(
+            	asizeof.asizeof(kmc.lattice)) )
+
 def saveFrames(folder, n):
     """
     Produces and save an image of the lattice after the n th kmc step.
     The image is saved in folder under the name fig_n.png.
     This is used for verification purpose.
+    Red dot = site is occupied
+    Black dot = site is empty
     """
 
     fig = plt.figure()
@@ -88,5 +99,5 @@ def saveFrames(folder, n):
     ax.set_aspect('equal')
 
     if folder:
-        plt.savefig( '{}fig_{}.png'.format(folder,n), format = "png", transparent = False )
+        plt.savefig( '{}frame_{}.png'.format(folder,n), format = "png", transparent = False )
     plt.close()

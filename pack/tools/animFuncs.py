@@ -69,7 +69,7 @@ def read_data(coorddir):
     n = len(files) # number of files in coorddir
     i=0
     while i < n:
-        file = path+'step_{}.txt'.format(i+1)
+        file = path+'coord_{}.txt'.format(i+1)
         x, y, occ = np.genfromtxt(file, comments='#', unpack=True)
         with open( file, 'r') as f:
             line1 = f.readline()

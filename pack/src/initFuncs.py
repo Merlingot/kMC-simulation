@@ -13,7 +13,7 @@ import time
 import numpy as np
 
 import pack.src.kmc as kmc
-
+from pack.src.run import put
 from pack.utilities.const import PREFACTOR, BOLTZMAN
 from pack.utilities.parameters import calculateDepositionArea, calculateTotalRate
 from pack.include.latticeFunc import createLattice
@@ -71,9 +71,7 @@ def initDepositionProcess(nx, ny, deposition_rate):
     kmc.area, kmc.lx, kmc.ly = calculateDepositionArea(nx,ny)
     kmc.total_deposition_rate = calculateTotalRate(kmc.area, deposition_rate)
     start_index = len(kmc.proc_list)
-    dep =  createProcess( 'Deposition', 'deposition', shell = 1, empty = 0 )
-    for proc in dep :
-        proc.rate = kmc.total_deposition_rate #TO DO: assign directly
+    dep =  createProcess( 'Deposition', 'deposition', shell = 1, empty = 0, rate = kmc.total_deposition_rate )
     kmc.proc_list +=  dep
     kmc.deposition_ids = np.arange(start_index, start_index+len(dep))
 
@@ -118,3 +116,15 @@ def initEvents():
         if possible_processes_nb :
             for proc_nb in possible_processes_nb :
                 kmc.addEvent( proc_nb, site.number )
+
+def initIsland(l, undefinedFile):
+    """Creates an island in the form of an equilateral triangle in the middle of the simulation cell"""
+    assert (l < kmc.lx and l < kmc.ly ), 'Side of island larger than simulation cell'
+    h = np.sqrt(3)*l/2
+    for site in kmc.lattice.sites:
+        if (0 <= site.coordinates[0] <= l/2):
+            if site.coordinates[1] <= (2*site.coordinates[0]*h/l):
+                put(site, 1, undefinedFile)
+        elif (l/2 <= site.coordinates[0] <= l):
+            if site.coordinates[1] <= (h - 2*(site.coordinates[0]-l/2)*h/l):
+                put(site, 1, undefinedFile)

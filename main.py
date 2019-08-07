@@ -7,15 +7,19 @@
 # Function included :
 #	- main
 #######################################################
-
 import numpy as np
 import os
 
-# package functions
-from pack.src.initFuncs import init, initDirectoriesandFiles
-from pack.src.run import doSteps
-from pack.src.saveFuncs import writeResults, writeRange, writeStats
+#memory and time profiling
+from profile import profile
+from time import sleep
 
+# package functions
+from pack.src.initFuncs import init, initDirectoriesandFiles, initIsland
+from pack.src.run import doSteps
+from pack.src.saveFuncs import writeResults, writeRange, writeStats, saveFrames, writeMemUsage
+
+@profile
 def main():
 
 	# input files
@@ -31,6 +35,9 @@ def main():
 	initDirectoriesandFiles(ctrl.outdir, ctrl.coorddir, ctrl.framesdir, ctrl.undefinedFile, ctrl.procFile)
 	init(ctrl.nx, ctrl.ny, ctrl.deposition_rate, ctrl.temperature)
 
+	if ctrl.lisland>0 :
+		initIsland(ctrl.lisland, ctrl.undefinedFile)
+
 	# Run n steps
 	print('Start of simulation')
 	status=doSteps(ctrl.nsteps, ctrl.coorddir, ctrl.procFile, ctrl.framesdir, ctrl.undefinedFile)
@@ -41,6 +48,7 @@ def main():
 	writeResults(ctrl.resultFile, status)
 	writeStats(ctrl.statFile)
 	writeRange(ctrl.rangeFile)
+	writeMemUsage(ctrl.memFile)
 
 	print('Done')
 
