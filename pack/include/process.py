@@ -33,6 +33,7 @@ class Process:
 
         self.rate=rate
 
+        self.number = None
         self.conf = None
         self.initInfo()
 
@@ -41,8 +42,6 @@ class Process:
             if not self.activation_energy:
                 self.calculerEnergieDiffusion()
 
-        self.number = None
-        self.rate = None
 
     def initInfo(self):
 
@@ -86,8 +85,10 @@ class Process:
         temperature : from parameters.py
         boltzman : from parameters.py
         """
-        if not self.rate:
+        if self.rate == None:
             if self.prefactor:
                 return self.prefactor*np.exp(-self.activation_energy/(boltzman*temperature))
             else:
                 return prefactor*np.exp(-self.activation_energy/(boltzman*temperature))
+        else:
+            return self.rate
