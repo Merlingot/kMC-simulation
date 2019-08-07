@@ -17,11 +17,11 @@ import pack.src.kmc as kmc
 
 
 def writeResults(filename, status):
-    """ Writes the results of the simulation to filename """
+    """ Writes the results of the simulation to filename to a new file."""
 
     with open(filename, 'w+') as resultFile:
         resultFile.write('Nombre de sites: {} \n'.format(kmc.sites_count))
-        resultFile.write('Aire: {:.6f} micrometer squared \n'.format(kmc.area*1e12))
+        resultFile.write('Aire: {:.6f} microm. carrés \n'.format(kmc.area*1e12))
         resultFile.write('Nombre de processus: {}\n'.format(kmc.nb_of_process))
         resultFile.write('Temps initialisation (runtime): {:.6f} s.\n'.format(kmc.init_time) )
         average_time = np.mean(kmc.runtime_steps)
@@ -29,34 +29,40 @@ def writeResults(filename, status):
         resultFile.write('Temps total (runtime) : {:.6f} s. \n'.format(kmc.runtime))
         resultFile.write('Nombre de step: {} \n'.format(kmc.steps))
         resultFile.write('Temps (systeme physique) : {:.6f} microsecondes \n'.format(kmc.time*1e6))
-        resultFile.write('Stats en pourcentage: \n')
+
+def writeStats(filename):
+    """ Writes the kmc processes statistics in % to a new file. """
     total = np.sum(kmc.process_stats)
     proc_stat = kmc.process_stats*100/total
     indexSort = np.argsort(proc_stat)
-    with open(filename, 'a') as resultFile:
+    with open(filename, 'w+') as statsFile:
+        statsFile.write('# Name Type Number Occurence(%)\n')
         for index in indexSort:
             if proc_stat[index] > 0:
-                resultFile.write( '{} | {} | {:.2f} \n'.format( kmc.proc_list[index].name, index, proc_stat[index] ) )
+                statsFile.write( '{}   {}   {}   {:.5f}\n'.format( kmc.proc_list[index].name, kmc.proc_list[index].category, index, proc_stat[index] ) )
+
+def writeRange(filename):
+    """ Writes the lenght of the simulation domain to a new file."""
+    with open(filename, 'w+') as rangeFile:
+        rangeFile.write( '# Lx Ly\n')
+        rangeFile.write( '{} {}\n'.format(kmc.lx, kmc.ly))
+
+def writeQuickStats(filename, proc):
+    """ Writes the kmc process selected at a step n. File already initiated."""
+    with open(filename, 'a+') as procFile:
+        procFile.write('#nStep={} Time={}\n'.format(kmc.steps, kmc.time))
+        procFile.write( '{}   {}   {}   {:.0f}\n'.format( proc.name, proc.category, proc.number, kmc.process_stats[proc.number] ) )
 
 
 def writePositions(filename):
-    """ Writes the position of atoms and molecules to a file
-    at a specific time t and step n"""
+    """ Writes the position of atoms and molecules to a new file
+    at a specific time t and step n. The files are saved in the <out>/coordinates/ folder under the name coord_n.txt """
     with open(filename, 'w+') as posFile:
-        posFile.write('#nStep {} \n'.format(kmc.steps))
-        posFile.write('#Time {} \n\n'.format(kmc.time))
-
-    with open(filename, 'a') as posFile:
+        posFile.write('#nStep={} \n'.format(kmc.steps))
+        posFile.write('#Time={} \n\n'.format(kmc.time))
         for site in kmc.lattice.sites:
             if site.occupancy > 0:
                 posFile.write( '{} {} {} \n'.format(site.coordinates[0], site.coordinates[1], site.occupancy) )
-
-def writeRange(filename):
-    """writes the lenght of the simulation domain to a file"""
-    with open(filename, 'w+') as rangeFile:
-        rangeFile.write( '# Lx Ly \n')
-        rangeFile.write( '{} {} \n'.format(kmc.lx, kmc.ly))
-
 
 def saveFrames(folder, n):
     """

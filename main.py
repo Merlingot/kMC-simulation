@@ -14,7 +14,7 @@ import os
 # package functions
 from pack.src.initFuncs import init, initDirectoriesandFiles
 from pack.src.run import doSteps
-from pack.src.saveFuncs import writeResults, writeRange
+from pack.src.saveFuncs import writeResults, writeRange, writeStats
 
 def main():
 
@@ -28,17 +28,18 @@ def main():
 
 	# Initialization
 	print('Initialization ...')
-	initDirectoriesandFiles(ctrl.outdir, ctrl.coorddir, ctrl.framesdir, ctrl.undefinedFile)
+	initDirectoriesandFiles(ctrl.outdir, ctrl.coorddir, ctrl.framesdir, ctrl.undefinedFile, ctrl.procFile)
 	init(ctrl.nx, ctrl.ny, ctrl.deposition_rate, ctrl.temperature)
 
 	# Run n steps
 	print('Start of simulation')
-	status=doSteps(ctrl.nsteps, ctrl.coorddir, ctrl.undefinedFile, ctrl.framesdir)
+	status=doSteps(ctrl.nsteps, ctrl.coorddir, ctrl.procFile, ctrl.framesdir, ctrl.undefinedFile)
 	print('End of simulation')
 
 	# Saving
 	print('Saving results...')
 	writeResults(ctrl.resultFile, status)
+	writeStats(ctrl.statFile)
 	writeRange(ctrl.rangeFile)
 
 	print('Done')

@@ -21,10 +21,10 @@ import random
 import time
 
 import pack.src.kmc as kmc
-from pack.src.saveFuncs import writePositions, saveFrames
+from pack.src.saveFuncs import writePositions, saveFrames, writeQuickStats
 
 
-def doSteps( n, coorddir, undefinedFile, framesdir):
+def doSteps( n, coorddir, procFile, framesdir, undefinedFile):
     """
     Performs n kMC step.
     Args
@@ -64,7 +64,8 @@ def doSteps( n, coorddir, undefinedFile, framesdir):
             kmc.steps += 1
             print( 'step: {} | process: {} | time: {:.6f} | runtime: {:.6f}'.format( kmc.steps,  PROC.name, kmc.time, kmc.runtime  ) )
 
-            writePositions('{}step_{}.txt'.format(coorddir, steps_done))
+            writePositions('{}coord_{}.txt'.format(coorddir, steps_done))
+            writeQuickStats(procFile, PROC)
 
             # saveFrames: This will save an image of each step of the simulation. Only for testing purpose. Will slow down the simulation and take enormous space. Uncomment next line to activate.
             # saveFrames( framesdir, kmc.steps)
@@ -385,7 +386,7 @@ def separateMolecule(SITE, NEWS, filename):
                 kmc.addEvent(proc, site.number)
         else:
             writeUndefined(site.conf, filename)
-        
+
 
 
 def writeUndefined(number, filename):
