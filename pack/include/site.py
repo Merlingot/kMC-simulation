@@ -24,7 +24,6 @@ class Site:
         self.coordinates = coordinates
         self.neighboursNumber = neighbours
 
-        self.occupied = False
         self.occupancy = 0 # number of atoms on this site (empty=0, atom=1, Sb4=4)
 
         # List of neighbouring sites. Initialized in Lattice.__init__
@@ -35,7 +34,7 @@ class Site:
         self.conf = None
 
 
-    def identity( self ):
+    def updateConf( self ):
         """
         Returns:
             the configuration id of this site
