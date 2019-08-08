@@ -21,7 +21,8 @@ class Process:
         KArgs:
             activation_energy (Float) : activation energy for this process (eV)
             action sites (tuple / tuple(tuple)), optionnal, default to None
-            prefactor (Float)
+            prefactor (Float) : prefactor of transition rate
+            rate (float) : transition rate (not thermally activated)
         """
         self.name = name
         self.category = category
@@ -38,9 +39,8 @@ class Process:
         self.initInfo()
 
         ##Seulement pour la diffusion des ATOMES. On calcule l'energie d'activation avec le bond counting scheme
-        if self.category == 'diffusion':
-            if not self.activation_energy:
-                self.calculerEnergieDiffusion()
+        if (self.category == 'diffusion' and (not self.activation_energy)):
+            self.calculerEnergieDiffusion()
 
 
     def initInfo(self):

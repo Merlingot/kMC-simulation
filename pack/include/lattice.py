@@ -53,4 +53,4 @@ class Lattice:
     def initIds(self):
         """ Calculate the site.conf for all sites on the lattice """
         for site in self.sites:
-            site.conf = site.updateConf()
+            site.updateConf()

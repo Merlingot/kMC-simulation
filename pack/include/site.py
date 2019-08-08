@@ -39,10 +39,7 @@ class Site:
         Returns:
             the configuration id of this site
         """
-
         nb = str(self.occupancy)
-
         for i in self.neighbours:
             nb += str( i.occupancy )
-            iden = int(nb, 5)
-        return iden
+        self.conf = int(nb, 5)
