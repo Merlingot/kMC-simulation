@@ -1,4 +1,6 @@
 # profile.py
+# taken from https://stackoverflow.com/questions/552744/how-do-i-profile-memory-usage-in-python
+
 import time
 import os
 import psutil
