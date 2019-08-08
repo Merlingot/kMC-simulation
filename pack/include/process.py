@@ -1,58 +1,85 @@
 #######################################################
 # Module: process.py
-# Description: definition of Process Class
+# Description: definition of Process parent and child
+# classes
 #######################################################
 
 
 import numpy as np
 
-from pack.utilities.const import EN, EMIN
+from pack.utilities.const import EN, EMIN, PREFACTOR
 from pack.utilities.bondCounting import bond_dicts, theta
 
-
 class Process:
+    """Parent class of all processes class"""
 
-    def __init__(self, name, category, configuration, activation_energy=None, action_sites = None, prefactor = None, rate=None):
+    def __init__(self, name, configuration):
         """
         Args:
             name (Str)    :  process name
             category (Str): 'diffusion', 'molecule separation', 'molecule creation',  'evaporation' or 'deposition'
             configuration (list)
-        KArgs:
-            activation_energy (Float) : activation energy for this process (eV)
-            action sites (tuple / tuple(tuple)), optionnal, default to None
-            prefactor (Float) : prefactor of transition rate
-            rate (float) : transition rate (not thermally activated)
         """
         self.name = name
-        self.category = category
         self.configuration = configuration
 
-        self.activation_energy = activation_energy
-        self.action_sites = action_sites
-        self.prefactor = prefactor
-
-        self.rate=rate
+        self.rate=None
 
         self.number = None
         self.conf = None
         self.initInfo()
 
-        ##Seulement pour la diffusion des ATOMES. On calcule l'energie d'activation avec le bond counting scheme
-        if (self.category == 'diffusion' and (not self.activation_energy)):
-            self.calculerEnergieDiffusion()
-
-
     def initInfo(self):
-
         bin_id = ''
         for i in self.configuration:
             bin_id += str(i)
         self.conf = int(bin_id, 5) #Nombre en base 5
 
-    def calculerEnergieDiffusion(self):
 
-        n = self.action_sites
+class Deposition( Process ):
+
+    def __init__(self, name, category, configuration, rate) :
+
+        Process.__init__(self, name, category, configuration)
+        self.rate=rate
+
+
+class Evaporation( Process ):
+
+    def __init__(self, name, category, configuration, activation_energy=None, prefactor=PREFACTOR) :
+
+        Process.__init__(self, name, category, configuration)
+        if not self.activation_energy:
+            self.calculateEE()
+
+    def calculateRate(self, temperature, boltzman):
+        self.rate = self.prefactor*np.exp(-self.activation_energy/(boltzman*temperature))
+
+    def calculateEE(self):
+        for n in range(1,6):
+            nB += self.configuration[n]
+        self.activation_energy= 0.5*EN + nB*EN
+
+
+
+class Diffusion(Process):
+
+    def __init__(self, name, category, configuration, action_sites, activation_energy=None, prefactor=PREFACTOR) :
+
+        Process.__init__(self, name, category, configuration)
+        self.next_site = action_sites
+        self.activation_energy=activation_energy
+        self.prefactor=prefactor
+
+        if not self.activation_energy:
+            self.calculateDE()
+
+    def calculateRate(self, temperature, boltzman):
+        self.rate = self.prefactor*np.exp(-self.activation_energy/(boltzman*temperature))
+
+    def calculateDE(self):
+
+        n = self.next_site
         c = self.configuration
 
         ni_par = c[ bond_dicts[n]['niA'] ]
@@ -70,25 +97,34 @@ class Process:
         nG_par = nf_par
 
         E = EN/2 + nB*EN + nR*(EN/2) - nG_per*(EN/4) - nG_par*(EN/8)
-
         if E < 0:
             E = EMIN
-
         self.activation_energy = E
 
+class MolCreation( Process ):
 
-    def calculateRate(self, prefactor, temperature, boltzman):
-        """ calculates a process rate
-        prefactor : (default from parameters.py)
-            - uses the process.prefactor if it has one
-            - else : uses the default prefactor (the one in the argument)
-        temperature : from parameters.py
-        boltzman : from parameters.py
-        """
-        if self.rate == None:
-            if self.prefactor:
-                return self.prefactor*np.exp(-self.activation_energy/(boltzman*temperature))
-            else:
-                return prefactor*np.exp(-self.activation_energy/(boltzman*temperature))
-        else:
-            return self.rate
+    def __init__(self, name, category, configuration, action_sites, rate=None, activation_energy=None, prefactor=PREFACTOR):
+
+        Process.__init__(self, name, category, configuration)
+        self.rate=rate
+        self.mol_site = action_sites[1]
+        self.atom_sites = action_sites[0]
+        self.activation_energy=activation_energy
+        self.prefactor=prefactor
+
+    def calculateRate(self, temperature, boltzman):
+        self.rate = self.prefactor*np.exp(-self.activation_energy/(boltzman*temperature))
+
+
+class MolDissociation( Process ):
+
+    def __init__(self, name, category, configuration, action_sites, rate=None, activation_energy=None, prefactor=PREFACTOR):
+
+        Process.__init__(self, name, category, configuration)
+        self.rate=rate
+        self.atom_sites = action_sites
+        self.activation_energy=activation_energy
+        self.prefactor=prefactor
+
+    def calculateRate(self, temperature, boltzman):
+        self.rate = self.prefactor*np.exp(-self.activation_energy/(boltzman*temperature))

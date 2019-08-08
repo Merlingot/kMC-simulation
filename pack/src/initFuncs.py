@@ -57,7 +57,8 @@ def initLattice(nx,ny):
 def initProcessRates(temperature):
     """Calculates the process rates given the temperature"""
     for proc in kmc.proc_list:
-        proc.rate = proc.calculateRate(PREFACTOR, temperature, BOLTZMAN)
+        if not proc.rate :
+            proc.calculateRate(temperature, BOLTZMAN)
 
 def initDepositionProcess(nx, ny, deposition_rate):
     """
@@ -71,7 +72,7 @@ def initDepositionProcess(nx, ny, deposition_rate):
     kmc.area, kmc.lx, kmc.ly = calculateDepositionArea(nx,ny)
     kmc.total_deposition_rate = calculateTotalRate(kmc.area, deposition_rate)
     start_index = len(kmc.proc_list)
-    dep =  createProcess( 'Deposition', 'deposition', shell = 1, empty = 0, rate = kmc.total_deposition_rate )
+    dep =  createProcess( 'Deposition', 'deposition', shells = 1, empty = 0, rate = kmc.total_deposition_rate )
     kmc.proc_list +=  dep
     kmc.deposition_ids = np.arange(start_index, start_index+len(dep))
 

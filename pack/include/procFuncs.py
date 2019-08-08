@@ -17,41 +17,50 @@ import numpy as np
 from math import sqrt
 import matplotlib.pyplot as plt
 
-from pack.include.process import Process
+from pack.include.process import Diffusion, Evaporation, MolCreation, Deposition, MolDissociation
 from pack.include.latticeFunc import createLattice
 from pack.utilities.neighbourgsDicts import neighboursDict, neighboursDict1, neighboursDict2
 
+from pack.utilities.const import PREFACTOR
 
-def createProcess( name, category, activation_energy = None, prefactor = None, rate=None, new_sites = None, old_sites = None, empty = None, shell = None, shells = None, sym6 = False, sym3 = False, atoms = None, sb2=None, sb4 = None, unid = None):
+
+def createProcess( name, category, activation_energy = None, prefactor = PREFACTOR, rate=None, new_sites = None, old_sites = None, empty = None, shells = None, sym6 = False, sym3 = False, atoms = None, sb4 = None, unid = None):
     """
     Function needed to generate Process Class object
     Args:
         name (Str)
-        category (Str)
+        category (Str) : 'diffusion', 'molecule creation', 'evaporation', 'molecule separation'
     kArgs :
         activation_energy (Float)
         prefactor (Float)
-        rate (Float) : transition rate
-        new_sites : (Int or Tuple(int))
-        old_sites : (Int or Tuple(int))
-        empty (Tuple(Int)) : id numbers of empty sites
-        shell (Int) : if a complete shell is empty
-        shells (Tuple(Int)) : if many shells are empty
-        sym6 (Bool) : if True, also returns symetric processes (following 6-fold symetry)
-        sym3 (Bool) : if True, also returns symetric processes (following 3-fold symetry)
-        atoms (Tuple(int) or int) : id numbers of sites occupied by atoms
-        * sb2 (Tuple(int) or int)   : id numbers of sites occupied by sb2 (DONT USE THIS - not implemented)
-        sb4 (Tuple(int) or int)   : id numbers of sites occupied by sb4
-        unid (Tuple(int) or int)  : id numbers of sites of unidentified state
+        rate (Float) :
+            transition rate
+        new_sites (Int or Tuple(int))
+        old_sites (Int or Tuple(int))
+        empty (Tuple(Int)) :
+            id numbers of empty sites
+        shells (Tuple(Int) or Int) :
+            if many shells are empty
+        sym6 (Bool) :
+            if True, also returns symetric processes (following 6-fold symetry)
+        sym3 (Bool) :
+            if True, also returns symetric processes (following 3-fold symetry)
+        atoms (Tuple(int) or int) :
+            id numbers of sites occupied by atoms
+        sb4 (Tuple(int) or int)   :
+            id numbers of sites occupied by sb4
+        unid (Tuple(int) or int)  :
+            id numbers of sites of unidentified state
     Returns:
         List(Process) : list of all equivalent processes
     """
-    # input sanity : verify where either in one or the other of the 2 cases, not both !
+    # input sanity ------------------------------------------------------
+    # Rate vs. Energy : verify where either in one or the other of the 2 cases, not both !
     case1 = activation_energy!=None and rate==None
     case2 = activation_energy==None and rate!=None
     assert( not (case1 and case2) ), 'Input activation energy OR transition rate. If process is thermally activated enter activation_energy. If not, enter the rate'
 
-    # rest of the function
+    # rest of the function ----------------------------------------------
     list_of_equiv_proc = []
 
     t = list(np.arange(0,19))
@@ -67,20 +76,13 @@ def createProcess( name, category, activation_energy = None, prefactor = None, r
             empty_sites += list(empty)
 
     if shells:
+        if type(shells) == int:
+            shells = [shells]
         for i in shells:
             if i == 1:
                 empty_sites += t[1:7]
             elif i == 2:
                 empty_sites += t[7:19]
-
-
-    if shell:
-        if shell == 1:
-            empty_sites += t[1:7]
-        elif shell == 2:
-            empty_sites += t[7:19]
-
-
 
     if atoms != None:
         if type(atoms) == int:
@@ -88,7 +90,6 @@ def createProcess( name, category, activation_energy = None, prefactor = None, r
         else:
             for atom in atoms:
                 conditions.append( (atom, 2) )
-
 
     if sb4 != None:
         if type(sb4) == int:
@@ -110,7 +111,6 @@ def createProcess( name, category, activation_energy = None, prefactor = None, r
     list_config = list_of_config_and_sites[0]
     list_actionsites = list_of_config_and_sites[1]
 
-
     for i in range(len(list_config)):
 
         config = list_config[i]
@@ -123,13 +123,15 @@ def createProcess( name, category, activation_energy = None, prefactor = None, r
             name__ = name + '_#' + str(i)
 
         if category == 'deposition':
-            actionsite = None
+            list_of_equiv_proc.append( Deposition(name__, config, rate))
         elif category == 'evaporation':
-            actionsite = None
-        else:
-            actionsite = list_actionsites[i]
-
-        list_of_equiv_proc.append( Process(name__, category, config, activation_energy=activation_energy, action_sites=actionsite, prefactor=prefactor, rate=rate ) )
+            list_of_equiv_proc.append( Evaporation(name__, config, activation_energy=activation_energy, prefactor=prefactor) )
+        elif category == 'diffusion':
+            list_of_equiv_proc.append( Diffusion(name__, config, list_actionsites[i], activation_energy=activation_energy, prefactor=prefactor ) )
+        elif category == 'molecule creation':
+            list_of_equiv_proc.append( MolCreation(name__, config, list_actionsites[i], activation_energy=activation_energy, prefactor=prefactor, rate=rate) )
+        elif category == 'molecule separation':
+            list_of_equiv_proc.append( MolDissociation(name__, config, list_actionsites[i], activation_energy=activation_energy, prefactor=prefactor, rate=rate) )
 
     return list_of_equiv_proc
 
@@ -288,8 +290,7 @@ def equivalent(category_, conditions_, empty_, sym6_ = False, sym3_ = False, new
     Returns:
        list_of_equivalent_config, list_of_sites
           list_of_equivalent_config - List(int) :
-          list_of_sites - List(action sites*)   :
-          *see documentation
+          list_of_sites - List(action sites)   :
     """
     initial_condition = list( np.zeros(19, dtype = int) )
 
@@ -517,7 +518,7 @@ def replaceZeros(t, list_,  action_sites = None,  category = None):
 
 def showConfig(process, filename):
     """
-    * This is a function just for testing and visualising processes.
+    OBSOLETE
     Shows the configuration before a process and after.
     Args:
         process (Process) : the process to visualize
@@ -526,7 +527,6 @@ def showConfig(process, filename):
     """
     lattice = createLattice((5,3,1))
     sites_coordinates = [lattice.sites[45].coordinates] + [neighbour.coordinates for neighbour in lattice.sites[45].neighbours]
-    # print(sites_coordinates)
     config = process.configuration
 
     x = []; y = []; o = []

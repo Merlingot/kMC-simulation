@@ -22,6 +22,7 @@ import time
 
 import pack.src.kmc as kmc
 from pack.src.saveFuncs import writePositions, saveFrames, writeQuickStats
+from pack.include.process import Diffusion, Evaporation, Deposition, MolCreation, MolDissociation
 
 
 def doSteps( n, coorddir, procFile, framesdir, undefinedFile):
@@ -96,42 +97,36 @@ def decisionTree(PROC, SITE, filename):
         None
     """
 
-    if PROC.category == "diffusion":
+    if PROC.__class__ == Diffusion:
         """diffusion:
         Implies the movement of only 1 object (atom, Sb2 or Sb4) from the central site to another
-        diffusion.action_sites: the site cwid the central object is moving to
         """
-        diffusion( SITE, SITE.neighbours[ PROC.action_sites - 1 ], filename )
+        diffusion( SITE, SITE.neighbours[ PROC.next_site - 1 ], filename )
 
-    if PROC.category == "evaporation":
+    elif PROC.__class__ == Evaporation:
         """evaporation:
         Implies the evaporation of only 1 object (atom, Sb2 or Sb4) from the central site
         evaporation.action_sites = None
         """
         remove(SITE, filename)
 
-    if PROC.category == "deposition":
+    elif PROC.__class__  == Deposition:
         """
         Implies the creation and deposition of a Sb4 on the lattice.
-        deposition.action_sites = None (the atom is deposition on the central site)
         """
         put(SITE, 4, filename)
 
-    if PROC.category == "molecule creation":
+    elif PROC.__class__ == MolCreation:
         """
-        Implies that we take 2 or 4 atoms already existing and merge them into 1 site to form an Sb4
-        moleculecreation.action_sites = ( (old sites cwid), new site cwid )
+        Implies that we take 4 atoms already existing and merge them into 1 site to form an Sb4
         """
-        old_sites_nb = PROC.action_sites[0]
-        new_site_nb = PROC.action_sites[1]
-
         if new_site_nb == 0:
             NEW = SITE
-            OLDS = [SITE.neighbours[i-1] for i in old_sites_nb if i!=0]
+            OLDS = [SITE.neighbours[i-1] for i in PROC.atom_sites if i!=0]
         else :
-            NEW = SITE.neighbours[new_site_nb-1 ]
+            NEW = SITE.neighbours[ PROC.mol_site-1 ]
             OLDS = []
-            for i in old_sites_nb:
+            for i in PROC.atom_sites:
                 if i!=0:
                     OLDS.append(SITE.neighbours[i-1])
                 elif i == 0:
@@ -140,13 +135,12 @@ def decisionTree(PROC, SITE, filename):
         createMolecule(OLDS, NEW, filename)
 
 
-    if PROC.category == "molecule separation":
+    elif PROC.__class__ == MolDissociation :
         """
-        implies that we take 4 (Sb4) already existing atoms that are merged on 1 site (central cwid) and separate them on 4 different sites.
-        moleculeseparation.action_sites = ( new sites cwid )
+        implies that we take 4 atoms (Sb4) already existing atoms that are merged on 1 site (central cwid) and separate them on 4 different sites.
         """
         NEWS = []
-        for i in PROC.action_sites :
+        for i in PROC.atom_sites :
             if i == 0:
                 NEWS.append(SITE)
             else :

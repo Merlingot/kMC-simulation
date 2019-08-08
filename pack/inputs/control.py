@@ -4,15 +4,15 @@
 nsteps = 100
 # number of repetition of the unit cell
 # for reference the size of the unit cell is a/2 x 2*a/sqrt(3)
-nx = 40
-ny = 20
+nx = 10
+ny = 10
 # temperature of substrate (Kelvin)
 temperature=300
 # deposition rate (Angstrom/second)
 deposition_rate=50
 # size of island triangle
-lisland = (4.28*1e-10/2)*20
-
+# lisland = (4.28*1e-10/2)*20
+lisland = 0
 
 # relative path to the package directory (<packdir> = <kmcDir>/pack/)
 packdir = "pack/"
