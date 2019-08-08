@@ -187,7 +187,7 @@ def put(SITE, nb_of_atoms, filename):
     assert (SITE.occupancy < 5), 'More than 4 atoms on site'
     # -------------------------------
 
-    SITE.conf = SITE.updateConf()
+    SITE.updateConf()
     processes_to_add = kmc.proc_adress.get( SITE.conf )
     if processes_to_add:
         for proc in processes_to_add :
@@ -197,7 +197,7 @@ def put(SITE, nb_of_atoms, filename):
 
 
     for neighbour in SITE.neighbours:
-        neighbour.conf = neighbour.updateConf()
+        neighbour.updateConf()
         _processes_to_add = kmc.proc_adress.get( neighbour.conf )
         if _processes_to_add:
             for proc in _processes_to_add :
@@ -236,7 +236,7 @@ def remove(SITE, filename):
     SITE.occupancy = 0
 
 
-    SITE.conf = SITE.updateConf()
+    SITE.updateConf()
     processes_to_add = kmc.proc_adress.get( SITE.conf )
     if processes_to_add:
         for proc in processes_to_add :
@@ -246,7 +246,7 @@ def remove(SITE, filename):
 
 
     for neighbour in SITE.neighbours:
-        neighbour.conf = neighbour.updateConf()
+        neighbour.updateConf()
         _processes_to_add = kmc.proc_adress.get( neighbour.conf )
         if _processes_to_add:
             for proc in _processes_to_add :
@@ -282,7 +282,7 @@ def diffusion(OLD, NEW, filename):
     # -------------------------------
 
     for site in site_list:
-        site.conf = site.updateConf()
+        site.updateConf()
         processes_to_add = kmc.proc_adress.get( site.conf )
         if processes_to_add :
             for proc in processes_to_add :
@@ -327,7 +327,7 @@ def createMolecule(OLDS, NEW, filename):
     # -------------------------------
 
     for site in site_list:
-        site.conf = site.updateConf()
+        site.updateConf()
         processes_to_add = kmc.proc_adress.get( site.conf )
 
         if processes_to_add :
@@ -373,7 +373,7 @@ def separateMolecule(SITE, NEWS, filename):
 
 
     for site in site_list:
-        site.conf = site.updateConf()
+        site.updateConf()
         processes_to_add = kmc.proc_adress.get( site.conf )
 
         if processes_to_add :
