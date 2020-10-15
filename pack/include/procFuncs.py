@@ -10,7 +10,6 @@
 #	- showConfig
 #######################################################
 
-
 from itertools import chain
 import random
 import numpy as np
@@ -61,20 +60,14 @@ def createProcess( name, category, activation_energy = None, prefactor = PREFACT
     assert( not (case1 and case2) ), 'Input activation energy OR transition rate. If process is thermally activated enter activation_energy. If not, enter the rate'
 
     # rest of the function ----------------------------------------------
-    list_of_equiv_proc = []
-
     t = list(np.arange(0,19))
-
-    empty_sites = []
-
-    conditions = []
+    list_of_equiv_proc, empty_sites, conditions = [], [], []
 
     if empty != None:
         if type(empty) == int:
             empty_sites.append(empty)
         else:
             empty_sites += list(empty)
-
     if shells:
         if type(shells) == int:
             shells = [shells]
@@ -83,21 +76,18 @@ def createProcess( name, category, activation_energy = None, prefactor = PREFACT
                 empty_sites += t[1:7]
             elif i == 2:
                 empty_sites += t[7:19]
-
     if atoms != None:
         if type(atoms) == int:
             conditions.append( (atoms, 2) )
         else:
             for atom in atoms:
                 conditions.append( (atom, 2) )
-
     if sb4 != None:
         if type(sb4) == int:
             conditions.append( (sb4, 4) )
         else:
             for j in sb4:
                 conditions.append( (j, 4) )
-
     if unid != None:
         if type(unid) == int:
             conditions.append( (unid, 0) )
@@ -105,6 +95,8 @@ def createProcess( name, category, activation_energy = None, prefactor = PREFACT
             for k in unid:
                 conditions.append( (k, 0) )
 
+
+    # Find all equivalent processes
     list_of_config_and_sites = equivalent(category, conditions, empty_sites, sym6_ = sym6, sym3_ = sym3,
     new = new_sites, old = old_sites)
 
@@ -112,28 +104,107 @@ def createProcess( name, category, activation_energy = None, prefactor = PREFACT
     list_actionsites = list_of_config_and_sites[1]
 
     for i in range(len(list_config)):
-
-        config = list_config[i]
-
-        if sym3 == True:
-            name__ = name + '_#' +str(i)
-        elif sym6 == True:
-            name__ = name + '_#'+str(i)
-        else:
-            name__ = name + '_#' + str(i)
-
+        name__ = name + '_#' + str(i)
         if category == 'deposition':
-            list_of_equiv_proc.append( Deposition(name__, config, rate))
+            list_of_equiv_proc.append( Deposition(name__, category, list_config[i], rate))
         elif category == 'evaporation':
-            list_of_equiv_proc.append( Evaporation(name__, config, activation_energy=activation_energy, prefactor=prefactor) )
+            list_of_equiv_proc.append( Evaporation(name__, category, list_config[i], activation_energy=activation_energy, prefactor=prefactor) )
         elif category == 'diffusion':
-            list_of_equiv_proc.append( Diffusion(name__, config, list_actionsites[i], activation_energy=activation_energy, prefactor=prefactor ) )
+            list_of_equiv_proc.append( Diffusion(name__, category, list_config[i], list_actionsites[i], activation_energy=activation_energy, prefactor=prefactor ) )
         elif category == 'molecule creation':
-            list_of_equiv_proc.append( MolCreation(name__, config, list_actionsites[i], activation_energy=activation_energy, prefactor=prefactor, rate=rate) )
+            list_of_equiv_proc.append( MolCreation(name__, category, list_config[i], list_actionsites[i], activation_energy=activation_energy, prefactor=prefactor, rate=rate) )
         elif category == 'molecule separation':
-            list_of_equiv_proc.append( MolDissociation(name__, config, list_actionsites[i], activation_energy=activation_energy, prefactor=prefactor, rate=rate) )
+            list_of_equiv_proc.append( MolDissociation(name__, category, list_config[i], list_actionsites[i], activation_energy=activation_energy, prefactor=prefactor, rate=rate) )
 
     return list_of_equiv_proc
+
+
+
+def equivalent(category_, conditions_, empty_, sym6_ = False, sym3_ = False, new = None, old = None):
+    """
+    Returns equivalent configurations and sites given the symetries AND the unidentified sites.
+    Args:
+        same as generate processes
+        conditions_ : List(tuples): conditions on certain sites (see condition documentation)
+    Returns:
+       list_of_equivalent_config, list_of_sites
+          list_of_equivalent_config - List(int) :
+          list_of_sites - List(action sites)   :
+    """
+    # Build the initial configuration (0:unid, 1:empty, 2:atom, 4:sb4)
+    initial_condition = list( np.zeros(19, dtype = int) )
+    if empty_:
+        for nb in empty_:
+            initial_condition[nb] = 1
+    if conditions_ != []:
+        for condition in conditions_:
+            cw = condition[0]
+            value = condition[1]
+            initial_condition[cw] = value
+
+    # Start finding equivalent configuration
+    if np.count_nonzero(initial_condition) < 6 : # Safety net
+        print('Not enough conditions to build equivalent processes')
+    else :
+        list_of_equivalent_config = []
+        list_of_sites = []
+
+    # Symetry operations:
+        if sym3_ == True:
+            sym_sites = symetricActionSites(category_, new_ = new, old_ = old, sym3__ = True)
+            seg0 = initial_condition[0]
+            seg1 = initial_condition[1:7]
+            seg2 = initial_condition[7:19]
+            for i in range(3):
+                l0 = len(list_of_equivalent_config)
+                seg1_ = list( np.roll(seg1, i*2) )
+                seg2_ = list( np.roll(seg2, i*4) )
+                sym_condition = [seg0] + seg1_ + seg2_
+                replaceZeros(sym_condition, list_of_equivalent_config,
+                action_sites = sym_sites[i], category =category_)
+                l1 = len(list_of_equivalent_config)
+                if sym_sites:
+                    for j in range(l1 - l0):
+                        list_of_sites.append(sym_sites[i])
+    # 6 fold                     
+        elif sym6_ == True:
+            sym_sites = symetricActionSites(category_, new_ = new, old_ = old, sym6__ = True)
+            seg0 = initial_condition[0]
+            seg1 = initial_condition[1:7]
+            seg2 = initial_condition[7:19]
+            for i in range(6):
+                l0 = len(list_of_equivalent_config)
+                seg1_ = list( np.roll(seg1, i) )
+                seg2_ = list( np.roll(seg2, i*2) )
+                sym_condition = [seg0] + seg1_ + seg2_
+                replaceZeros(sym_condition, list_of_equivalent_config,
+                action_sites = sym_sites[i], category =category_)
+                l1 = len(list_of_equivalent_config)
+                if sym_sites:
+                    for j in range(l1 - l0):
+                        list_of_sites.append(sym_sites[i])
+
+
+        else:
+            replaceZeros(initial_condition, list_of_equivalent_config,
+            action_sites = new, category =category_ )
+
+            if category_ == 'diffusion':
+                for k in range(len(list_of_equivalent_config)):
+                    list_of_sites.append(new)
+            if category_ == 'molecule creation':
+                for k_ in range(len(list_of_equivalent_config)):
+                    list_of_sites.append([old, new])
+            if category_ == 'molecule separation':
+                for k__ in range(len(list_of_equivalent_config)):
+                    list_of_sites.append(new)
+
+        for config in list_of_equivalent_config:   ## ugly but ok
+            for i in range(len(config)):
+                if config[i] != 4:
+                    config[i] -=1
+        return list_of_equivalent_config, list_of_sites
+
 
 
 def symetricActionSites(categ, new_ = None, old_ = None, sym6__ = False, sym3__ = False):
@@ -165,9 +236,7 @@ def symetricActionSites(categ, new_ = None, old_ = None, sym6__ = False, sym3__ 
                 new_site = np.roll(seg1, -i*2)[index]
                 list_of_symetric_sites.append(new_site)
 
-
         elif categ == 'molecule separation':
-
             for i in range(3):
                 new_sites = []
                 for j in new_ :
@@ -183,10 +252,7 @@ def symetricActionSites(categ, new_ = None, old_ = None, sym6__ = False, sym3__ 
                         new_sites.append(new_site)
                 list_of_symetric_sites.append(new_sites)
 
-
-
         elif categ == 'molecule creation':
-
             for i in range(3):
                 new_sites = []
                 olds = []
@@ -201,9 +267,7 @@ def symetricActionSites(categ, new_ = None, old_ = None, sym6__ = False, sym3__ 
                         index = seg2.index(j)
                         new_site = np.roll(seg2, -4*i)[index]
                         olds.append(new_site)
-
                 new_sites.append(olds)
-
                 if new_ == 0:
                     new_sites.append(new_)
                 elif new_ in seg1:
@@ -214,19 +278,15 @@ def symetricActionSites(categ, new_ = None, old_ = None, sym6__ = False, sym3__ 
                         index = seg2.index(j)
                         new_site = np.roll(seg2, -4*i)[index]
                         new_sites.append(new_site)
-
                 list_of_symetric_sites.append(new_sites)
 
     if sym6__ == True:
-
         if categ == 'diffusion':
             index = seg1.index(new_)
             for i in range(6):
                 new_site = np.roll(seg1, -i)[index]
                 list_of_symetric_sites.append(new_site)
-
         elif categ == 'molecule separation':
-
             for i in range(6):
                 new_sites = []
                 for j in new_ :
@@ -240,10 +300,7 @@ def symetricActionSites(categ, new_ = None, old_ = None, sym6__ = False, sym3__ 
                         index = seg2.index(j)
                         new_site = np.roll(seg2, -2*i)[index]
                         new_sites.append(new_site)
-
                 list_of_symetric_sites.append(new_sites)
-
-
         elif categ == 'molecule creation':
             for i in range(6):
                 new_sites = []
@@ -260,7 +317,6 @@ def symetricActionSites(categ, new_ = None, old_ = None, sym6__ = False, sym3__ 
                         new_site = np.roll(seg2, -2*i)[index]
                         olds.append(new_site)
                 new_sites.append(olds)
-
                 if new_ == 0:
                     new_sites.append(new_)
                 elif new_ in seg1:
@@ -271,7 +327,6 @@ def symetricActionSites(categ, new_ = None, old_ = None, sym6__ = False, sym3__ 
                         index = seg2.index(j)
                         new_site = np.roll(seg2, -2*i)[index]
                         new_sites.append(new_site)
-
                 list_of_symetric_sites.append(new_sites)
 
     return list_of_symetric_sites
@@ -281,106 +336,7 @@ def symetricActionSites(categ, new_ = None, old_ = None, sym6__ = False, sym3__ 
 
 
 
-def equivalent(category_, conditions_, empty_, sym6_ = False, sym3_ = False, new = None, old = None):
-    """
-    Returns equivalent configurations and sites given the symetries AND the unidentified sites.
-    Args:
-        same as generate processes
-        conditions_ : List(tuples): conditions on certain sites (see condition documentation)
-    Returns:
-       list_of_equivalent_config, list_of_sites
-          list_of_equivalent_config - List(int) :
-          list_of_sites - List(action sites)   :
-    """
-    initial_condition = list( np.zeros(19, dtype = int) )
 
-    if empty_:
-        for nb in empty_:
-            initial_condition[nb] = 1
-
-    if conditions_ != []:
-        for condition in conditions_:
-            cw = condition[0]
-            value = condition[1]
-            initial_condition[cw] = value
-
-    # Safety net ------------------
-    if np.count_nonzero(initial_condition) < 6 :
-        print('Not enough conditions to build equivalent processes')
-    #-------------------------------
-    else :
-
-        list_of_equivalent_config = []
-        list_of_sites = []
-
-        if sym3_ == True:
-
-            sym_sites = symetricActionSites(category_, new_ = new, old_ = old, sym3__ = True)
-
-            seg0 = initial_condition[0]
-            seg1 = initial_condition[1:7]
-            seg2 = initial_condition[7:19]
-
-
-
-            for i in range(3):
-
-                l0 = len(list_of_equivalent_config)
-                seg1_ = list( np.roll(seg1, i*2) )
-                seg2_ = list( np.roll(seg2, i*4) )
-                sym_condition = [seg0] + seg1_ + seg2_
-                replaceZeros(sym_condition, list_of_equivalent_config,
-                action_sites = sym_sites[i], category =category_)
-                l1 = len(list_of_equivalent_config)
-                if sym_sites:
-                    for j in range(l1 - l0):
-                        list_of_sites.append(sym_sites[i])
-
-
-        elif sym6_ == True:
-
-            sym_sites = symetricActionSites(category_, new_ = new, old_ = old, sym6__ = True)
-
-            seg0 = initial_condition[0]
-            seg1 = initial_condition[1:7]
-            seg2 = initial_condition[7:19]
-
-            for i in range(6):
-                l0 = len(list_of_equivalent_config)
-                seg1_ = list( np.roll(seg1, i) )
-                seg2_ = list( np.roll(seg2, i*2) )
-
-                sym_condition = [seg0] + seg1_ + seg2_
-                replaceZeros(sym_condition, list_of_equivalent_config,
-                action_sites = sym_sites[i], category =category_)
-                l1 = len(list_of_equivalent_config)
-                if sym_sites:
-                    for j in range(l1 - l0):
-                        list_of_sites.append(sym_sites[i])
-
-
-        else:
-
-            replaceZeros(initial_condition, list_of_equivalent_config,
-            action_sites = new, category =category_ )
-
-            if category_ == 'diffusion':
-                for k in range(len(list_of_equivalent_config)):
-                    list_of_sites.append(new)
-            if category_ == 'molecule creation':
-                for k_ in range(len(list_of_equivalent_config)):
-                    list_of_sites.append([old, new])
-            if category_ == 'molecule separation':
-                for k__ in range(len(list_of_equivalent_config)):
-                    list_of_sites.append(new)
-
-        for config in list_of_equivalent_config:   ## ok
-            for i in range(len(config)):
-                if config[i] != 4:
-                    config[i] -=1
-
-
-        return list_of_equivalent_config, list_of_sites
 
 
 def replaceZeros(t, list_,  action_sites = None,  category = None):
@@ -405,7 +361,6 @@ def replaceZeros(t, list_,  action_sites = None,  category = None):
 
         if category == 'diffusion' and t[0] == 4 : #diffusion de sb4
             anySb4 += action_sites in neighboursDict[n]
-
 
         if anySb4:
             ## Check if there's any Sb4 in the first neighbours or a Sb4 that will diffuse in the first neighbors
@@ -481,8 +436,6 @@ def replaceZeros(t, list_,  action_sites = None,  category = None):
                     else : #autres categories
                         n2 = t[:n] + [2] + t[n+1:]
                         replaceZeros(n2, list_, action_sites = action_sites, category =category)
-
-
 
             """ Pour ajouter un Sb4:
             1) Il ne doit pas y avoir d'atome ou de molecule dans les premiers voisins

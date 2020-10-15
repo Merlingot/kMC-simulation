@@ -13,7 +13,7 @@ from pack.utilities.bondCounting import bond_dicts, theta
 class Process:
     """Parent class of all processes class"""
 
-    def __init__(self, name, configuration):
+    def __init__(self, name, category, configuration):
         """
         Args:
             name (Str)    :  process name
@@ -21,6 +21,7 @@ class Process:
             configuration (list)
         """
         self.name = name
+        self.category = category
         self.configuration = configuration
 
         self.rate=None
